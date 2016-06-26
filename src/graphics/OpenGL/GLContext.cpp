@@ -28,26 +28,12 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //-----------------------------------------------------------------------------
 
-#include "platform/window.hpp"
+#include "graphics/OpenGL/GLContext.hpp"
 
-Window::Window(const std::string &title, int width, int height, Flags flags, ContextAPI api) {
-	// Setup window flags
-	unsigned int sdlFlags = SDL_WindowFlags::SDL_WINDOW_SHOWN;
-	if (api == ContextAPI::OpenGL)
-		sdlFlags |= SDL_WindowFlags::SDL_WINDOW_OPENGL;
-	if (flags & Flags::FULLSCREEN)
-		sdlFlags |= SDL_WindowFlags::SDL_WINDOW_FULLSCREEN;
-	if (flags & Flags::HIGHDPI)
-		sdlFlags |= SDL_WindowFlags::SDL_WINDOW_ALLOW_HIGHDPI;
+void GLContext::init() {
 
-	mWindow = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, sdlFlags);
-
-	// Create a context.
-	mContext = ContextFactory::createContext(api);
 }
 
-Window::~Window() {
-	// destroy context and window
-	ContextFactory::releaseContext(mContext);
-	SDL_DestroyWindow(mWindow);
+void GLContext::destroy() {
+
 }
