@@ -30,8 +30,8 @@ endif()
 
 #------------------------------------------------------------------------------
 
-include("cmake/glad.cmake.txt")
-include("cmake/openSimplexNoise.cmake.txt")
+include("cmake/glad.cmake")
+include("cmake/openSimplexNoise.cmake")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/SDL2")
 
 # Voxel Game
