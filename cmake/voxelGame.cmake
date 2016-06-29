@@ -30,6 +30,9 @@
 #------------------------------------------------------------------------------
 
 set(VOXEL_SRC
+	src/game/gameObject.cpp
+	src/game/gameObject.hpp
+	
 	src/graphics/context.cpp
 	src/graphics/context.hpp
 	src/graphics/renderer.cpp
