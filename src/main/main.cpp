@@ -7,6 +7,7 @@ int main(int argc, const char **argv) {
 
 	// create window and pause for 1 second.
 	Window window("Test", 1440, 900, Window::Flags::NONE, ContextAPI::OpenGL);
+	window.swapBuffers();
 	SDL_Delay(1000);
 
 	SDL_Quit();

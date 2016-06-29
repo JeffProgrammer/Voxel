@@ -37,6 +37,10 @@ class D3D11Context : public Context {
 public:
 	virtual void destroy() override;
 
+	virtual void swapBuffers() const override {
+
+	}
+
 	virtual Renderer* getRenderer() const override {
 		return nullptr;
 	}

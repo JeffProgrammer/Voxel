@@ -57,6 +57,9 @@ void GLContext::destroy() {
 	delete mRenderer;
 }
 
+void GLContext::swapBuffers() const {
+	SDL_GL_SwapWindow(mWindow->getSDLWindow());
+}
 Renderer* GLContext::getRenderer() const {
 	return mRenderer;
 }

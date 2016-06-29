@@ -47,6 +47,12 @@ public:
 	Window(const std::string &title, int width, int height, Flags flags, ContextAPI api);
 	~Window();
 
+	SDL_Window* getSDLWindow() const {
+		return mWindow;
+	}
+
+	void swapBuffers();
+
 private:
 	SDL_Window *mWindow;
 	Context *mContext;

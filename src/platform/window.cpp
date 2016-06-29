@@ -55,3 +55,7 @@ Window::~Window() {
 	ContextFactory::releaseContext(mContext);
 	SDL_DestroyWindow(mWindow);
 }
+
+void Window::swapBuffers() {
+	mContext->swapBuffers();
+}

@@ -46,6 +46,8 @@ public:
 	void init(Window *window);
 	virtual void destroy() = 0;
 
+	virtual void swapBuffers() const = 0;
+
 	virtual Renderer* getRenderer() const = 0;
 
 protected:
