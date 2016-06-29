@@ -1,5 +1,6 @@
 //-----------------------------------------------------------------------------
-// Copyright (c) 2016, Jeff Hutchinson
+// Copyright (c) 2014-2016, Jeff Hutchinson
+// Copyright (c) 2014-2016 Glenn Smith
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -31,16 +32,23 @@
 #ifndef _GRAPHICS_OPENGL_GLCONTEXT_HPP_
 #define _GRAPHICS_OPENGL_GLCONTEXT_HPP_
 
+#include <SDL.h>
+#include <glad/glad.h>
 #include "graphics/context.hpp"
 
 class GLContext : public Context {
 public:
+	GLContext();
+
 	virtual void destroy() override;
 	virtual void swapBuffers() const override;
 	virtual Renderer* getRenderer() const override;
 
 protected:
 	virtual void initContext() override;
+
+	SDL_GLContext mContext;
+	GLuint mGlobalVAO;
 };
 
 #endif // _GRAPHICS_OPENGL_GLCONTEXT_HPP_

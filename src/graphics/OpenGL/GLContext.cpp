@@ -29,14 +29,18 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //-----------------------------------------------------------------------------
 
+#include <assert.h>
 #include <SDL.h>
 #include "graphics/OpenGL/GLContext.hpp"
 #include "graphics/OpenGL/GLRenderer.hpp"
+#include "platform/window.hpp"
+
+GLContext::GLContext() : mContext(nullptr), mGlobalVAO(0) {
+
+}
 
 void GLContext::initContext() {
 	mRenderer = new GLRenderer();
-
-	/// Initialize OpenGL stuff for SDL context and create the context.
 
 	// Set core profile flags for OpenGL 3.3
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
@@ -51,15 +55,48 @@ void GLContext::initContext() {
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+
+	mContext = SDL_GL_CreateContext(mWindow->getSDLWindow());
+	if (mContext == NULL) {
+		assert(false);
+		return;
+	}
+
+	SDL_GL_MakeCurrent(mWindow->getSDLWindow(), mContext);
+
+	// Initialize glad
+	if (!gladLoadGL()) {
+		assert(false);
+		return;
+	}
+
+	// The core profile requires a VAO to be bound before quite a bit of specific GL calls are made.
+	// We'll just create a global state VAO for now so that we can just call GL functions.
+	glGenVertexArrays(1, &mGlobalVAO);
+	glBindVertexArray(mGlobalVAO);
+
+	// Set Clear color
+	glClearColor(0.0f, 1.0f, 1.0f, 0.5f);
+	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void GLContext::destroy() {
+	if (mContext != nullptr) {
+		SDL_GL_DeleteContext(mContext);
+		SDL_GL_MakeCurrent(NULL, NULL);
+
+		// Delete the VAO
+		if (glIsVertexArray(mGlobalVAO)) {
+			glDeleteVertexArrays(1, &mGlobalVAO);
+		}
+	}
 	delete mRenderer;
 }
 
 void GLContext::swapBuffers() const {
 	SDL_GL_SwapWindow(mWindow->getSDLWindow());
 }
+
 Renderer* GLContext::getRenderer() const {
 	return mRenderer;
 }
