@@ -37,6 +37,7 @@ class GLContext : public Context {
 public:
 	virtual void init() override;
 	virtual void destroy() override;
+	virtual Renderer* getRenderer() const override;
 };
 
 #endif // _GRAPHICS_OPENGL_GLCONTEXT_HPP_

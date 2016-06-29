@@ -29,11 +29,16 @@
 //-----------------------------------------------------------------------------
 
 #include "graphics/OpenGL/GLContext.hpp"
+#include "graphics/OpenGL/GLRenderer.hpp"
 
 void GLContext::init() {
-
+	mRenderer = new GLRenderer();
 }
 
 void GLContext::destroy() {
+	delete mRenderer;
+}
 
+Renderer* GLContext::getRenderer() const {
+	return mRenderer;
 }

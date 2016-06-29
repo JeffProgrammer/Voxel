@@ -37,6 +37,10 @@ class D3D11Context : public Context {
 public:
 	virtual void init() override;
 	virtual void destroy() override;
+
+	virtual Renderer* getRenderer() const override {
+		return nullptr;
+	}
 };
 
 #endif // _GRAPHICS_D3D11_D3D11CONTEXT_HPP_

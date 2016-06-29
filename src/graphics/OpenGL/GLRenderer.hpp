@@ -28,37 +28,14 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //-----------------------------------------------------------------------------
 
-#ifndef _GRAPHICS_CONTEXT_HPP_
-#define _GRAPHICS_CONTEXT_HPP_
+#ifndef _GRAPHICS_OPENGL_GLRENDERER_HPP_
+#define _GRAPHICS_OPENGL_GLRENDERER_HPP_
 
 #include "graphics/renderer.hpp"
 
-enum ContextAPI : int {
-	OpenGL,
-	// WebGL,
-	D3D11
-};
-
-class Context {
+class GLRenderer : public Renderer {
 public:
-	virtual void init() = 0;
-	virtual void destroy() = 0;
-
-	virtual Renderer* getRenderer() const = 0;
-
-protected:
-	Renderer *mRenderer;
+	virtual void renderChunks() override;
 };
 
-class ContextFactory {
-public:
-	static Context* createContext(ContextAPI api);
-	static void releaseContext(Context *context);
-
-	static void setCurrentContext(Context *current);
-};
-
-extern Context *gCurrentContext;
-#define RENDERER gCurrentContext->getRenderer()
-
-#endif // _GRAPHICS_CONTEXT_HPP_
+#endif // _GRAPHICS_OPENGL_GLRENDERER_HPP_

@@ -36,6 +36,8 @@
 
 #include "graphics/OpenGL/GLContext.hpp"
 
+Context *gCurrentContext = nullptr;
+
 Context* ContextFactory::createContext(ContextAPI api) {
 	Context *context;
 #ifdef _WIN32
@@ -52,4 +54,8 @@ Context* ContextFactory::createContext(ContextAPI api) {
 void ContextFactory::releaseContext(Context *context) {
 	context->destroy();
 	delete context;
+}
+
+void ContextFactory::setCurrentContext(Context *current) {
+	gCurrentContext = current;
 }

@@ -32,8 +32,12 @@
 set(VOXEL_SRC
 	src/graphics/context.cpp
 	src/graphics/context.hpp
+	src/graphics/renderer.cpp
+	src/graphics/renderer.hpp
 	src/graphics/OpenGL/GLContext.cpp
 	src/graphics/OpenGL/GLContext.hpp
+	src/graphics/OpenGL/GLRenderer.cpp
+	src/graphics/OpenGL/GLRenderer.hpp
 
 	src/main/main.cpp
 	

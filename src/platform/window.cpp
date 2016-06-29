@@ -42,8 +42,9 @@ Window::Window(const std::string &title, int width, int height, Flags flags, Con
 
 	mWindow = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, sdlFlags);
 
-	// Create a context.
+	// Create a context and initialize it.
 	mContext = ContextFactory::createContext(api);
+	ContextFactory::setCurrentContext(mContext);
 }
 
 Window::~Window() {
