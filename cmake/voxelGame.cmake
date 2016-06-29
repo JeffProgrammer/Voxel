@@ -75,3 +75,11 @@ set (VOXEL_LIBRARIES
 add_executable(Voxel ${VOXEL_SRC})
 target_link_libraries(Voxel ${VOXEL_LIBRARIES})
 include_directories(include ${VOXEL_INCLUDE})
+
+# Project solution folders organization
+source_group("game" REGULAR_EXPRESSION game/.*)
+source_group("graphics" REGULAR_EXPRESSION graphics/.*)
+source_group("graphics\\D3D11" REGULAR_EXPRESSION graphics/D3D11/.*)
+source_group("graphics\\OpenGL" REGULAR_EXPRESSION graphics/OpenGL/.*)
+source_group("main" REGULAR_EXPRESSION main/.*)
+source_group("platform" REGULAR_EXPRESSION platform/.*)
