@@ -44,14 +44,12 @@ void Context::init(Window *window) {
 }
 
 Context* ContextFactory::createContext(ContextAPI api) {
-	Context *context;
 #ifdef _WIN32
+	// Check for D3D11 API selection.
 	if (api == ContextAPI::D3D11)
-		context = new D3D11Context;
-	else
+		return new D3D11Context();
 #endif
-	context = new GLContext;
-	return context;
+	return new GLContext();
 }
 
 void ContextFactory::releaseContext(Context *context) {
