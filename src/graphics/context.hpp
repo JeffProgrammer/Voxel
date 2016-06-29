@@ -33,6 +33,8 @@
 
 #include "graphics/renderer.hpp"
 
+class Window;
+
 enum ContextAPI : int {
 	OpenGL,
 	// WebGL,
@@ -41,13 +43,16 @@ enum ContextAPI : int {
 
 class Context {
 public:
-	virtual void init() = 0;
+	void init(Window *window);
 	virtual void destroy() = 0;
 
 	virtual Renderer* getRenderer() const = 0;
 
 protected:
 	Renderer *mRenderer;
+	Window *mWindow;
+	
+	virtual void initContext() = 0;
 };
 
 class ContextFactory {

@@ -30,7 +30,7 @@
 
 #include "graphics/D3D11/D3D11Context.hpp"
 
-void D3D11Context::init() {
+void D3D11Context::initContext() {
 
 }
 

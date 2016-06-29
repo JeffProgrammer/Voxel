@@ -1,5 +1,6 @@
 //-----------------------------------------------------------------------------
-// Copyright (c) 2016, Jeff Hutchinson
+// Copyright (c) 2014-2016, Jeff Hutchinson
+// Copyright (c) 2014-2016 Glenn Smith
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -28,11 +29,28 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //-----------------------------------------------------------------------------
 
+#include <SDL.h>
 #include "graphics/OpenGL/GLContext.hpp"
 #include "graphics/OpenGL/GLRenderer.hpp"
 
-void GLContext::init() {
+void GLContext::initContext() {
 	mRenderer = new GLRenderer();
+
+	/// Initialize OpenGL stuff for SDL context and create the context.
+
+	// Set core profile flags for OpenGL 3.3
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+
+	// set other window hints.
+	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 }
 
 void GLContext::destroy() {

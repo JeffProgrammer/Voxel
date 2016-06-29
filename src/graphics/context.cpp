@@ -38,6 +38,11 @@
 
 Context *gCurrentContext = nullptr;
 
+void Context::init(Window *window) {
+	mWindow = window;
+	initContext();
+}
+
 Context* ContextFactory::createContext(ContextAPI api) {
 	Context *context;
 #ifdef _WIN32
@@ -46,8 +51,6 @@ Context* ContextFactory::createContext(ContextAPI api) {
 	else
 #endif
 	context = new GLContext;
-
-	context->init();
 	return context;
 }
 

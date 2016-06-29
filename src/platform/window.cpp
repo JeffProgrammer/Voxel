@@ -44,6 +44,9 @@ Window::Window(const std::string &title, int width, int height, Flags flags, Con
 
 	// Create a context and initialize it.
 	mContext = ContextFactory::createContext(api);
+	mContext->init(this);
+
+	// set the current context so that global variables can be used.
 	ContextFactory::setCurrentContext(mContext);
 }
 
