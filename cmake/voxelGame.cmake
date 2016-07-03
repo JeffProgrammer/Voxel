@@ -44,6 +44,14 @@ set(VOXEL_SRC
 
 	src/main/main.cpp
 	
+	src/platform/event/eventManager.cpp
+	src/platform/event/eventManager.hpp
+	src/platform/event/eventTypes.hpp
+	src/platform/event/interface/IInputEvent.cpp
+	src/platform/event/interface/IInputEvent.hpp
+	src/platform/event/interface/IWindowEvent.cpp
+	src/platform/event/interface/IWindowEvent.hpp
+	
 	src/platform/window.cpp
 	src/platform/window.hpp
 )
@@ -83,3 +91,5 @@ source_group("graphics\\D3D11" REGULAR_EXPRESSION graphics/D3D11/.*)
 source_group("graphics\\OpenGL" REGULAR_EXPRESSION graphics/OpenGL/.*)
 source_group("main" REGULAR_EXPRESSION main/.*)
 source_group("platform" REGULAR_EXPRESSION platform/.*)
+source_group("platform\\event" REGULAR_EXPRESSION platform/event/.*)
+source_group("platform\\event\\interface" REGULAR_EXPRESSION platform/event/interface/.*)
