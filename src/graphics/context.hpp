@@ -43,6 +43,8 @@ enum ContextAPI : int {
 
 class Context {
 public:
+	virtual ~Context() {}
+	
 	void init(Window *window);
 	virtual void destroy() = 0;
 
