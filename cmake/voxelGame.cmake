@@ -34,7 +34,7 @@ set(VOXEL_SRC
 	src/game/camera.hpp
 	src/game/gameObject.cpp
 	src/game/gameObject.hpp
-	
+
 	src/graphics/context.cpp
 	src/graphics/context.hpp
 	src/graphics/renderer.cpp
@@ -45,7 +45,7 @@ set(VOXEL_SRC
 	src/graphics/OpenGL/GLRenderer.hpp
 
 	src/main/main.cpp
-	
+
 	src/platform/event/eventManager.cpp
 	src/platform/event/eventManager.hpp
 	src/platform/event/eventTypes.hpp
@@ -53,7 +53,7 @@ set(VOXEL_SRC
 	src/platform/event/interface/IInputEvent.hpp
 	src/platform/event/interface/IWindowEvent.cpp
 	src/platform/event/interface/IWindowEvent.hpp
-	
+
 	src/platform/window.cpp
 	src/platform/window.hpp
 )
@@ -78,13 +78,22 @@ set (VOXEL_LIBRARIES
 	Glad
 	OpenSimplexNoise
 	SDL2-static
-	
-	OpenGL32
 )
+
+if (WIN32)
+	set (VOXEL_LIBRARIES
+		${VOXEL_LIBRARIES}
+		OpenGL32
+	)
+endif()
 
 add_executable(Voxel ${VOXEL_SRC})
 target_link_libraries(Voxel ${VOXEL_LIBRARIES})
 include_directories(include ${VOXEL_INCLUDE})
+
+if (APPLE)
+	target_link_libraries(Voxel "-framework OpenGL")
+endif()
 
 # Project solution folders organization
 source_group("game" REGULAR_EXPRESSION game/.*)
