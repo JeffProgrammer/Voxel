@@ -29,32 +29,122 @@
 //-----------------------------------------------------------------------------
 
 #include <assert.h>
-#include <SDL.h>
+#include "core/algorithm.hpp"
 #include "platform/event/eventManager.hpp"
+#include "platform/event/interface/IKeyboardEvent.hpp"
+#include "platform/event/interface/IMouseButtonEvent.hpp"
+#include "platform/event/interface/IMouseMovementEvent.hpp"
+#include "platform/event/interface/IWindowEvent.hpp"
 
 EventManager gEventManager;
 
 void EventManager::pullEvents() const {
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
-
+		switch (e.type) {
+			case SDL_EventType::SDL_KEYDOWN:
+			case SDL_EventType::SDL_KEYUP:
+				dispatchKeyEvent(e);
+				break;
+			case SDL_EventType::SDL_MOUSEBUTTONDOWN:
+			case SDL_EventType::SDL_MOUSEBUTTONUP:
+				dispatchMouseButtonEvent(e);
+				break;
+			case SDL_EventType::SDL_MOUSEMOTION:
+				dispatchMouseMotionEvent(e);
+				break;
+			case SDL_EventType::SDL_WINDOWEVENT:
+				dispatchWindowEvent(e);
+				break;
+			case SDL_EventType::SDL_QUIT:
+				dispatchQuitEvent(e);
+				break;
+		}
 	}
 }
 
-void EventManager::addEvent(const IInputEvent *inputEvent) {
-	mInputEvents.push_back(inputEvent);
+void EventManager::dispatchKeyEvent(const SDL_Event &e) const {
+	KeyboardEvent ev;
+	ev.isPressedDown = (e.type == SDL_EventType::SDL_KEYDOWN);
+	ev.scanCode = e.key.keysym.scancode;
+	
+	for (const auto i : mKeyboardEvents) {
+		i->processKeyboard(ev);
+	}
 }
 
+void EventManager::dispatchMouseButtonEvent(const SDL_Event &e) const {
+	MouseButtonEvent ev;
+	ev.leftClick = e.button.button == SDL_BUTTON_LEFT;
+	ev.rightClick = e.button.button == SDL_BUTTON_RIGHT;
+	ev.middleClick = e.button.button == SDL_BUTTON_MIDDLE;
+	ev.doubleClick = e.button.clicks >= 2;
+	
+	for (const auto i : mMouseButtonEvents) {
+		i->processMouseButton(ev);
+	}
+}
+
+void EventManager::dispatchMouseMotionEvent(const SDL_Event &e) const {
+	MouseMovementEvent ev;
+	ev.mousePosition = glm::vec2(e.motion.x, e.motion.y);
+	ev.mouseDelta = glm::vec2(e.motion.xrel, e.motion.yrel);
+	
+	for (const auto i : mMouseMovmentEvents) {
+		i->processMouseMovement(ev);
+	}
+}
+
+void EventManager::dispatchWindowEvent(const SDL_Event &e) const {
+	WindowEvent ev;
+	ev.gainedFocus = e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED;
+	ev.lostFocus = e.window.event == SDL_WINDOWEVENT_FOCUS_LOST;
+	
+	// TODO: dispatch window events.
+}
+
+void EventManager::dispatchQuitEvent(const SDL_Event &e) const {
+	// TODO: for quit event handling.
+}
+
+//-----------------------------------------------------------------------------
+
 void EventManager::addEvent(const IWindowEvent *windowEvent) {
+	assert(!Algorithm::contains(mWindowEvents, windowEvent));
 	mWindowEvents.push_back(windowEvent);
 }
 
-void EventManager::removeEvent(const IInputEvent *inputEvent) {
-	assert(std::find(mInputEvents.begin(), mInputEvents.end(), inputEvent) != mInputEvents.end());
-	mInputEvents.erase(std::find(mInputEvents.begin(), mInputEvents.end(), inputEvent));
+void EventManager::addEvent(const IKeyboardEvent *inputEvent) {
+	assert(!Algorithm::contains(mKeyboardEvents, inputEvent));
+	mKeyboardEvents.push_back(inputEvent);
+}
+
+void EventManager::addEvent(const IMouseMovementEvent *mouseMovementEvent) {
+	assert(!Algorithm::contains(mMouseMovmentEvents, mouseMovementEvent));
+	mMouseMovmentEvents.push_back(mouseMovementEvent);
+}
+
+void EventManager::addEvent(const IMouseButtonEvent *mouseButtonEvent) {
+	assert(!Algorithm::contains(mMouseButtonEvents, mouseButtonEvent));
+	mMouseButtonEvents.push_back(mouseButtonEvent);
 }
 
 void EventManager::removeEvent(const IWindowEvent *windowEvent) {
-	assert(std::find(mWindowEvents.begin(), mWindowEvents.end(), windowEvent) != mWindowEvents.end());
+	assert(Algorithm::contains(mWindowEvents, windowEvent));
 	mWindowEvents.erase(std::find(mWindowEvents.begin(), mWindowEvents.end(), windowEvent));
+}
+
+void EventManager::removeEvent(const IKeyboardEvent *inputEvent) {
+	assert(Algorithm::contains(mKeyboardEvents, inputEvent));
+	mKeyboardEvents.erase(std::find(mKeyboardEvents.begin(), mKeyboardEvents.end(), inputEvent));
+}
+
+void EventManager::removeEvent(const IMouseMovementEvent *mouseMovementEvent) {
+	assert(Algorithm::contains(mMouseMovmentEvents, mouseMovementEvent));
+	mMouseMovmentEvents.erase(std::find(mMouseMovmentEvents.begin(), mMouseMovmentEvents.end(), mouseMovementEvent));
+}
+
+void EventManager::removeEvent(const IMouseButtonEvent *mouseButtonEvent) {
+	assert(Algorithm::contains(mMouseButtonEvents, mouseButtonEvent));
+	mMouseButtonEvents.erase(std::find(mMouseButtonEvents.begin(), mMouseButtonEvents.end(), mouseButtonEvent));
 }

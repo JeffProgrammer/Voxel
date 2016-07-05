@@ -30,6 +30,8 @@
 #------------------------------------------------------------------------------
 
 set(VOXEL_SRC
+	src/core/algorithm.hpp
+
 	src/game/camera.cpp
 	src/game/camera.hpp
 	src/game/gameObject.cpp
@@ -49,8 +51,12 @@ set(VOXEL_SRC
 	src/platform/event/eventManager.cpp
 	src/platform/event/eventManager.hpp
 	src/platform/event/eventTypes.hpp
-	src/platform/event/interface/IInputEvent.cpp
-	src/platform/event/interface/IInputEvent.hpp
+	src/platform/event/interface/IKeyboardEvent.cpp
+	src/platform/event/interface/IKeyboardEvent.hpp
+	src/platform/event/interface/IMouseButtonEvent.cpp
+	src/platform/event/interface/IMouseButtonEvent.hpp
+	src/platform/event/interface/IMouseMovementEvent.cpp
+	src/platform/event/interface/IMouseMovementEvent.hpp
 	src/platform/event/interface/IWindowEvent.cpp
 	src/platform/event/interface/IWindowEvent.hpp
 
@@ -96,6 +102,7 @@ if (APPLE)
 endif()
 
 # Project solution folders organization
+source_group("core" REGULAR_EXPRESSION core/.*)
 source_group("game" REGULAR_EXPRESSION game/.*)
 source_group("graphics" REGULAR_EXPRESSION graphics/.*)
 source_group("graphics\\D3D11" REGULAR_EXPRESSION graphics/D3D11/.*)

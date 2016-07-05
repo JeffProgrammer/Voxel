@@ -28,13 +28,17 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //-----------------------------------------------------------------------------
 
-#include "platform/event/interface/IInputEvent.hpp"
-#include "platform/event/eventManager.hpp"
+#ifndef _PLATFORM_EVENT_INTERFACE_IMOUSEBUTTONEVENT_HPP_
+#define _PLATFORM_EVENT_INTERFACE_IMOUSEBUTTONEVENT_HPP_
 
-IInputEvent::IInputEvent() {
-	gEventManager.addEvent(this);
-}
+#include "platform/event/eventTypes.hpp"
 
-IInputEvent::~IInputEvent() {
-	gEventManager.removeEvent(this);
-}
+class IMouseButtonEvent {
+public:
+	IMouseButtonEvent();
+	~IMouseButtonEvent();
+
+	virtual void processMouseButton(const MouseButtonEvent &mouseButtonEvent) const = 0;
+};
+
+#endif // _PLATFORM_EVENT_INTERFACE_IMOUSEBUTTONEVENT_HPP_

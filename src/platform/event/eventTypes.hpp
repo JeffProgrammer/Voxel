@@ -31,12 +31,29 @@
 #ifndef _PLATFORM_EVENTS_EVENTTYPES_HPP_
 #define _PLATFORM_EVENTS_EVENTTYPES_HPP_
 
-struct WindowEvent {
+#include <SDL.h>
+#include <glm/glm.hpp>
 
+struct WindowEvent {
+	bool gainedFocus;
+	bool lostFocus;
 };
 
-struct InputEvent {
+struct MouseMovementEvent {
+	glm::vec2 mouseDelta;
+	glm::vec2 mousePosition;
+};
 
+struct MouseButtonEvent {
+	bool leftClick;
+	bool rightClick;
+	bool middleClick;
+	bool doubleClick;
+};
+
+struct KeyboardEvent {
+	bool isPressedDown;
+	SDL_Scancode scanCode;
 };
 
 #endif // _PLATFORM_EVENTS_EVENTTYPES_HPP_

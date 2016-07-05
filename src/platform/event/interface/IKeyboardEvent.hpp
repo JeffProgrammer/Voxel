@@ -28,43 +28,17 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //-----------------------------------------------------------------------------
 
-#ifndef _PLATFORM_EVENT_EVENTMANAGER_HPP_
-#define _PLATFORM_EVENT_EVENTMANAGER_HPP_
+#ifndef _PLATFORM_EVENT_INTERFACE_IKEYBOARDEVENT_HPP_
+#define _PLATFORM_EVENT_INTERFACE_IKEYBOARDEVENT_HPP_
 
-#include <vector>
-#include <SDL.h>
+#include "platform/event/eventTypes.hpp"
 
-class IKeyboardEvent;
-class IWindowEvent;
-class IMouseMovementEvent;
-class IMouseButtonEvent;
-
-class EventManager {
+class IKeyboardEvent {
 public:
-	void pullEvents() const;
-	
-	void dispatchKeyEvent(const SDL_Event &e) const;
-	void dispatchMouseButtonEvent(const SDL_Event &e) const;
-	void dispatchMouseMotionEvent(const SDL_Event &e) const;
-	void dispatchWindowEvent(const SDL_Event &e) const;
-	void dispatchQuitEvent(const SDL_Event &e) const;
+	IKeyboardEvent();
+	~IKeyboardEvent();
 
-	void addEvent(const IKeyboardEvent *inputEvent);
-	void addEvent(const IWindowEvent *windowEvent);
-	void addEvent(const IMouseMovementEvent *mouseMovementEvent);
-	void addEvent(const IMouseButtonEvent *mouseButtonEvent);
-	void removeEvent(const IKeyboardEvent *inputEvent);
-	void removeEvent(const IWindowEvent *windowEvent);
-	void removeEvent(const IMouseMovementEvent *mouseMovementEvent);
-	void removeEvent(const IMouseButtonEvent *mouseButtonEvent);
-
-private:
-	std::vector<const IKeyboardEvent*> mKeyboardEvents;
-	std::vector<const IMouseMovementEvent*> mMouseMovmentEvents;
-	std::vector<const IMouseButtonEvent*> mMouseButtonEvents;
-	std::vector<const IWindowEvent*> mWindowEvents;
+	virtual void processKeyboard(const KeyboardEvent &keyboardEvent) const = 0;
 };
 
-extern EventManager gEventManager;
-
-#endif // _PLATFORM_EVENT_EVENTMANAGER_HPP_
+#endif // _PLATFORM_EVENT_INTERFACE_IKEYBOARDEVENT_HPP_
