@@ -38,7 +38,7 @@
 
 EventManager gEventManager;
 
-void EventManager::pullEvents() const {
+bool EventManager::pullEvents() const {
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
 		switch (e.type) {
@@ -57,10 +57,10 @@ void EventManager::pullEvents() const {
 				dispatchWindowEvent(e);
 				break;
 			case SDL_EventType::SDL_QUIT:
-				dispatchQuitEvent(e);
-				break;
+				return false;
 		}
 	}
+	return true;
 }
 
 void EventManager::dispatchKeyEvent(const SDL_Event &e) const {
@@ -101,10 +101,6 @@ void EventManager::dispatchWindowEvent(const SDL_Event &e) const {
 	ev.lostFocus = e.window.event == SDL_WINDOWEVENT_FOCUS_LOST;
 	
 	// TODO: dispatch window events.
-}
-
-void EventManager::dispatchQuitEvent(const SDL_Event &e) const {
-	// TODO: for quit event handling.
 }
 
 //-----------------------------------------------------------------------------

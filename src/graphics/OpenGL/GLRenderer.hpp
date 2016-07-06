@@ -35,7 +35,11 @@
 
 class GLRenderer : public Renderer {
 public:
+	virtual void beginFrame() override;
+	
 	virtual void renderChunks() override;
+	
+	virtual void endFrame() override;
 };
 
 #endif // _GRAPHICS_OPENGL_GLRENDERER_HPP_

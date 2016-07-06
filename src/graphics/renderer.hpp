@@ -33,7 +33,11 @@
 
 class Renderer {
 public:
+	virtual void beginFrame() = 0;
+	
 	virtual void renderChunks() = 0;
+	
+	virtual void endFrame() = 0;
 };
 
 #endif
