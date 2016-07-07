@@ -31,6 +31,7 @@
 
 set(VOXEL_SRC
 	src/core/algorithm.hpp
+	src/core/cube.hpp
 
 	src/game/camera.cpp
 	src/game/camera.hpp
