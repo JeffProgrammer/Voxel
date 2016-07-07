@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include "platform/window.hpp"
 #include "platform/event/eventManager.hpp"
+#include "game/camera.hpp"
 #undef main
 
 int main(int argc, const char **argv) {
@@ -8,9 +9,8 @@ int main(int argc, const char **argv) {
 
 	// create window and pause for 1 second.
 	Window window("Test", 1440, 900, Window::Flags::NONE, ContextAPI::OpenGL);
-	
+	Camera camera;
 	while (gEventManager.pullEvents()) {
-		
 		window.swapBuffers();
 	}
 	
