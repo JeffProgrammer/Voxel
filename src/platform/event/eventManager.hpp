@@ -48,20 +48,20 @@ public:
 	void dispatchMouseMotionEvent(const SDL_Event &e) const;
 	void dispatchWindowEvent(const SDL_Event &e) const;
 
-	void addEvent(const IKeyboardEvent *inputEvent);
-	void addEvent(const IWindowEvent *windowEvent);
-	void addEvent(const IMouseMovementEvent *mouseMovementEvent);
-	void addEvent(const IMouseButtonEvent *mouseButtonEvent);
-	void removeEvent(const IKeyboardEvent *inputEvent);
-	void removeEvent(const IWindowEvent *windowEvent);
-	void removeEvent(const IMouseMovementEvent *mouseMovementEvent);
-	void removeEvent(const IMouseButtonEvent *mouseButtonEvent);
+	void addEvent(IKeyboardEvent *inputEvent);
+	void addEvent(IWindowEvent *windowEvent);
+	void addEvent(IMouseMovementEvent *mouseMovementEvent);
+	void addEvent(IMouseButtonEvent *mouseButtonEvent);
+	void removeEvent(IKeyboardEvent *inputEvent);
+	void removeEvent(IWindowEvent *windowEvent);
+	void removeEvent(IMouseMovementEvent *mouseMovementEvent);
+	void removeEvent(IMouseButtonEvent *mouseButtonEvent);
 
 private:
-	std::vector<const IKeyboardEvent*> mKeyboardEvents;
-	std::vector<const IMouseMovementEvent*> mMouseMovmentEvents;
-	std::vector<const IMouseButtonEvent*> mMouseButtonEvents;
-	std::vector<const IWindowEvent*> mWindowEvents;
+	std::vector<IKeyboardEvent*> mKeyboardEvents;
+	std::vector<IMouseMovementEvent*> mMouseMovmentEvents;
+	std::vector<IMouseButtonEvent*> mMouseButtonEvents;
+	std::vector<IWindowEvent*> mWindowEvents;
 };
 
 extern EventManager gEventManager;

@@ -38,7 +38,7 @@ public:
 	IMouseMovementEvent();
 	~IMouseMovementEvent();
 
-	virtual void processMouseMovement(const MouseMovementEvent &mouseMovementEvent) const = 0;
+	virtual void processMouseMovement(const MouseMovementEvent &mouseMovementEvent) = 0;
 };
 
 #endif // _PLATFORM_EVENT_INTERFACE_IMOUSEMOVEMENTEVENT_HPP_

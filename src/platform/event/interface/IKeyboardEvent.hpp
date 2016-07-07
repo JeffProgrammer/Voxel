@@ -38,7 +38,7 @@ public:
 	IKeyboardEvent();
 	~IKeyboardEvent();
 
-	virtual void processKeyboard(const KeyboardEvent &keyboardEvent) const = 0;
+	virtual void processKeyboard(const KeyboardEvent &keyboardEvent) = 0;
 };
 
 #endif // _PLATFORM_EVENT_INTERFACE_IKEYBOARDEVENT_HPP_
