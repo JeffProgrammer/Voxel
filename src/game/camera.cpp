@@ -30,3 +30,10 @@
 
 #include "game/camera.hpp"
 
+void Camera::processMouseMovement(const MouseMovementEvent &e) {
+	
+}
+
+void Camera::processKeyboard(const KeyboardEvent &e) {
+
+}

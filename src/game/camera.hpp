@@ -32,10 +32,13 @@
 #define _GAME_CAMERA_HPP_
 
 #include "game/gameObject.hpp"
+#include "platform/event/interface/IMouseMovementEvent.hpp"
+#include "platform/event/interface/IKeyboardEvent.hpp"
 
-class Camera : public GameObject {
+class Camera : public GameObject, public IMouseMovementEvent, public IKeyboardEvent {
 public:
-	
+	virtual void processMouseMovement(const MouseMovementEvent &e) override;
+	virtual void processKeyboard(const KeyboardEvent &e) override;
 };
 
 #endif // _GAME_CAMERA_HPP_
