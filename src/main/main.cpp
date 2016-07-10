@@ -11,6 +11,9 @@ int main(int argc, const char **argv) {
 	Window window("Test", 1440, 900, Window::Flags::NONE, ContextAPI::OpenGL);
 	Camera camera;
 	while (gEventManager.pullEvents()) {
+		RENDERER->beginFrame();
+		RENDERER->renderSingleCube();
+		RENDERER->endFrame();
 		window.swapBuffers();
 	}
 	

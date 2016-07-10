@@ -48,7 +48,6 @@ protected:
 	virtual void initContext() override;
 
 	SDL_GLContext mContext;
-	GLuint mGlobalVAO;
 };
 
 #endif // _GRAPHICS_OPENGL_GLCONTEXT_HPP_

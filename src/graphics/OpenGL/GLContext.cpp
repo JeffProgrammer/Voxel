@@ -35,7 +35,7 @@
 #include "graphics/OpenGL/GLRenderer.hpp"
 #include "platform/window.hpp"
 
-GLContext::GLContext() : mContext(nullptr), mGlobalVAO(0) {
+GLContext::GLContext() : mContext(nullptr) {
 
 }
 
@@ -69,26 +69,15 @@ void GLContext::initContext() {
 		assert(false);
 		return;
 	}
-
-	// The core profile requires a VAO to be bound before quite a bit of specific GL calls are made.
-	// We'll just create a global state VAO for now so that we can just call GL functions.
-	glGenVertexArrays(1, &mGlobalVAO);
-	glBindVertexArray(mGlobalVAO);
-
-	// Set Clear color
-	glClearColor(0.0f, 1.0f, 1.0f, 0.5f);
-	glClear(GL_COLOR_BUFFER_BIT);
+	
+	mRenderer->initRenderer();
 }
 
 void GLContext::destroy() {
 	if (mContext != nullptr) {
+		mRenderer->destroyRenderer();
 		SDL_GL_DeleteContext(mContext);
 		SDL_GL_MakeCurrent(NULL, NULL);
-
-		// Delete the VAO
-		if (glIsVertexArray(mGlobalVAO)) {
-			glDeleteVertexArrays(1, &mGlobalVAO);
-		}
 	}
 	delete mRenderer;
 }

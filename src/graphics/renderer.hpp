@@ -33,11 +33,18 @@
 
 class Renderer {
 public:
+	virtual void initRenderer() = 0;
+	
+	virtual void destroyRenderer() = 0;
+	
 	virtual void beginFrame() = 0;
 	
 	virtual void renderChunks() = 0;
 	
 	virtual void endFrame() = 0;
+	
+	// Test method to make sure rendering works.
+	virtual void renderSingleCube() = 0;
 };
 
 #endif
