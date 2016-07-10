@@ -31,17 +31,18 @@
 #ifndef _CORE_CUBE_HPP_
 #define _CORE_CUBE_HPP_
 
+
 // Cube data comes from learnopengl.com which is Public Domain code:
 // I index'd the data for more efficient GPU cache usage.
 
 // 24 cube vertices.
-static float *cubeVertices = {
+static float cubeVertices[] = {
 	// Back face
 	-0.5f, -0.5f, -0.5f, // Bottom-left 0
 	0.5f, -0.5f, -0.5f,  // bottom-right 1
 	0.5f,  0.5f, -0.5f,  // top-right 2
 	-0.5f,  0.5f, -0.5f, // top-left 3
-
+	
 	// Front face
 	-0.5f, -0.5f,  0.5f, // bottom-left 4
 	0.5f,  0.5f,  0.5f,  // top-right 5
@@ -59,7 +60,7 @@ static float *cubeVertices = {
 	0.5f,  0.5f, -0.5f,  // top-right 13
 	0.5f, -0.5f, -0.5f,  // bottom-right 14
 	0.5f, -0.5f,  0.5f,  // bottom-left 15
-
+	
 	// Bottom face
 	-0.5f, -0.5f, -0.5f, // top-right 16
 	0.5f, -0.5f,  0.5f,  // bottom-left 17
@@ -74,7 +75,7 @@ static float *cubeVertices = {
 };
 
 // 36 cube indices.
-static unsigned short *cubeIndices = {
+static unsigned short cubeIndices[] = {
 	// Back face
 	0, 1, 2,
 	2, 3, 0,
@@ -99,5 +100,6 @@ static unsigned short *cubeIndices = {
 	20, 21, 22,
 	22, 23, 20
 };
+
 
 #endif // _CORE_CUBE_HPP_
