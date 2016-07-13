@@ -37,8 +37,25 @@
 
 class Camera : public GameObject, public IMouseMovementEvent, public IKeyboardEvent {
 public:
+	const float MOUSE_SENSATIVITY = 0.15f;
+	const float CAMERA_MOVEMENT_SPEED = 5.0f;
+	
+	Camera();
+	
 	virtual void processMouseMovement(const MouseMovementEvent &e) override;
 	virtual void processKeyboard(const KeyboardEvent &e) override;
+	
+	void getYawPitch(float &yaw, float &pitch) const;
+	
+	glm::vec3 getFrontVector() const;
+	glm::vec3 getUpVector() const;
+	
+private:
+	float mPitch;
+	float mYaw;
+	
+	glm::vec3 mFrontVector;
+	glm::vec3 mUpVector;
 };
 
 #endif // _GAME_CAMERA_HPP_

@@ -30,10 +30,65 @@
 
 #include "game/camera.hpp"
 
-void Camera::processMouseMovement(const MouseMovementEvent &e) {
+Camera::Camera() {
+	mFrontVector = glm::vec3(0.0f, 0.0f, -1.0f);
+	mUpVector = glm::vec3(0.0f, 1.0f, 0.0f);
 	
+	mYaw = -90.0f;
+	mPitch = 0.0f;
+}
+
+void Camera::getYawPitch(float &yaw, float &pitch) const {
+	yaw = mYaw;
+	pitch = mPitch;
+}
+
+glm::vec3 Camera::getFrontVector() const {
+	return mFrontVector;
+}
+
+glm::vec3 Camera::getUpVector() const {
+	return mUpVector;
+}
+
+void Camera::processMouseMovement(const MouseMovementEvent &e) {
+	mYaw += e.mouseDelta.x * MOUSE_SENSATIVITY;
+	mPitch += e.mouseDelta.y * MOUSE_SENSATIVITY;
+	
+	// Cap pitch
+	mPitch = glm::clamp(mPitch, -89.999f, 89.999f);
+	
+	// convert yaw/pitch to radians.
+	float yaw = glm::radians(mYaw);
+	float pitch = glm::radians(mPitch);
+	
+	// Adjust front vector
+	glm::vec3 front(0.0f);
+	front.x = glm::cos(yaw) * glm::cos(pitch);
+	front.y = glm::sin(pitch);
+	front.z = glm::sin(yaw) * glm::cos(pitch);
+	mFrontVector = glm::normalize(front);
 }
 
 void Camera::processKeyboard(const KeyboardEvent &e) {
-
+	if (!e.isPressedDown)
+		return;
+	
+	switch (e.scanCode) {
+		case SDL_SCANCODE_W:
+			mPosition += CAMERA_MOVEMENT_SPEED * 0.016f * mFrontVector; // todo: delta time.
+			break;
+		case SDL_SCANCODE_S:
+			mPosition -= CAMERA_MOVEMENT_SPEED * 0.016f * mFrontVector; // todo: delta time.
+			break;
+		case SDL_SCANCODE_A:
+			mPosition -= CAMERA_MOVEMENT_SPEED * 0.016f * glm::normalize(glm::cross(mFrontVector, mUpVector)); // todo: delta time.
+			break;
+		case SDL_SCANCODE_D:
+			mPosition += CAMERA_MOVEMENT_SPEED * 0.016f * glm::normalize(glm::cross(mFrontVector, mUpVector)); // todo: delta time.
+			break;
+		default:
+			// Nothing.
+			break;
+	}
 }
