@@ -35,8 +35,9 @@
 #include <SDL.h>
 
 #include "graphics/context.hpp"
+#include "platform/event/interface/IKeyboardEvent.hpp"
 
-class Window {
+class Window : public IKeyboardEvent {
 public:
 	enum Flags : int {
 		NONE,
@@ -52,6 +53,9 @@ public:
 	}
 
 	void swapBuffers();
+	void lockCursor(bool lock);
+	
+	virtual void processKeyboard(const KeyboardEvent &keyboardEvent) override;
 
 private:
 	SDL_Window *mWindow;

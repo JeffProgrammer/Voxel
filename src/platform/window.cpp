@@ -59,3 +59,14 @@ Window::~Window() {
 void Window::swapBuffers() {
 	mContext->swapBuffers();
 }
+
+void Window::lockCursor(bool lock) {
+	SDL_ShowCursor(lock);
+	SDL_SetRelativeMouseMode(lock ? SDL_TRUE : SDL_FALSE);
+}
+
+void Window::processKeyboard(const KeyboardEvent &keyboardEvent) {
+	// toggle cursor state.
+	if (keyboardEvent.isPressedDown && keyboardEvent.scanCode == SDL_SCANCODE_ESCAPE)
+		lockCursor(!SDL_ShowCursor(SDL_QUERY));
+}
