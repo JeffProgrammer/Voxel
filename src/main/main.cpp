@@ -8,14 +8,17 @@ int main(int argc, const char **argv) {
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	// create window and pause for 1 second.
-	Window window("Test", 1440, 900, Window::Flags::NONE, ContextAPI::OpenGL);
+	Window *window = new Window("Test", 1440, 900, Window::Flags::NONE, ContextAPI::OpenGL);
 	Camera camera;
+	camera.setPosition(glm::vec3(3.0f, 3.0f, -3.0f));
+	RENDERER->setActiveSceneCamera(&camera);
 	while (gEventManager.pullEvents()) {
 		RENDERER->beginFrame();
 		RENDERER->renderSingleCube();
 		RENDERER->endFrame();
-		window.swapBuffers();
+		window->swapBuffers();
 	}
+	delete window;
 	
 	SDL_Quit();
 	return 0;
