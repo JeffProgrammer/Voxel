@@ -36,7 +36,7 @@
 class IMouseMovementEvent {
 public:
 	IMouseMovementEvent();
-	~IMouseMovementEvent();
+	virtual ~IMouseMovementEvent();
 
 	virtual void processMouseMovement(const MouseMovementEvent &mouseMovementEvent) = 0;
 };

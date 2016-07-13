@@ -36,7 +36,7 @@
 class IMouseButtonEvent {
 public:
 	IMouseButtonEvent();
-	~IMouseButtonEvent();
+	virtual ~IMouseButtonEvent();
 
 	virtual void processMouseButton(const MouseButtonEvent &mouseButtonEvent) const = 0;
 };

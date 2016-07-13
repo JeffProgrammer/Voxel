@@ -36,7 +36,7 @@
 class IWindowEvent {
 public:
 	IWindowEvent();
-	~IWindowEvent();
+	virtual ~IWindowEvent();
 
 	virtual void processWindow(const WindowEvent &windowEvent) = 0;
 };

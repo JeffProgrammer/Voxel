@@ -36,7 +36,7 @@
 class IKeyboardEvent {
 public:
 	IKeyboardEvent();
-	~IKeyboardEvent();
+	virtual ~IKeyboardEvent();
 
 	virtual void processKeyboard(const KeyboardEvent &keyboardEvent) = 0;
 };
