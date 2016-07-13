@@ -32,6 +32,7 @@
 #define _GRAPHICS_OPENGL_GLRENDERER_HPP_
 
 #include "graphics/renderer.hpp"
+#include "game/camera.hpp"
 
 class GLRenderer : public Renderer {
 public:
@@ -47,8 +48,11 @@ public:
 	
 	virtual void renderSingleCube() override;
 	
+	virtual void setActiveSceneCamera(Camera *camera) override;
+	
 protected:
 	GLuint mGlobalVAO;
+	Camera *mCamera;
 };
 
 #endif // _GRAPHICS_OPENGL_GLRENDERER_HPP_

@@ -35,6 +35,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "graphics/OpenGL/GLRenderer.hpp"
 #include "core/cube.hpp"
+#include "game/camera.hpp"
 
 // temporary for a single cube until I figure out how to manage materials and
 // shaders.
@@ -80,6 +81,8 @@ static void checkError(const char *fn) {
 }
 
 void GLRenderer::initRenderer() {
+	mCamera = nullptr;
+	
 	// The core profile requires a VAO to be bound before quite a bit of specific GL calls are made.
 	// We'll just create a global state VAO for now so that we can just call GL functions.
 	glGenVertexArrays(1, &mGlobalVAO);
@@ -212,8 +215,11 @@ void GLRenderer::endFrame() {
 }
 
 void GLRenderer::renderSingleCube() {
-	glm::mat4 view = glm::lookAt(glm::vec3(-1.5f, 1.5f, -1.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	glm::mat4 proj = glm::perspective(glm::radians(90.0f), 16.f/9.f, 0.02f, 200.0f);
+	if (mCamera == nullptr)
+		return;
+	
+	glm::mat4 view = glm::lookAt(mCamera->getPosition(), mCamera->getPosition() + mCamera->getFrontVector(), mCamera->getUpVector());
+	glm::mat4 proj = glm::perspective(glm::radians(90.0f), 1440.f/900.f, 0.02f, 200.0f);
 	glm::mat4 model = glm::mat4(1.0f);
 	
 	glUseProgram(singleCubeProgram);
@@ -236,4 +242,8 @@ void GLRenderer::renderSingleCube() {
 	
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
 	checkError("glDrawElements");
+}
+
+void GLRenderer::setActiveSceneCamera(Camera *camera) {
+	mCamera = camera;
 }

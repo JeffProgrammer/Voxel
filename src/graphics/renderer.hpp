@@ -31,6 +31,10 @@
 #ifndef _GRAPHICS_RENDERER_H_
 #define _GRAPHICS_RENDERER_H_
 
+#include <glm/glm.hpp>
+
+class Camera;
+
 class Renderer {
 public:
 	virtual void initRenderer() = 0;
@@ -45,6 +49,8 @@ public:
 	
 	// Test method to make sure rendering works.
 	virtual void renderSingleCube() = 0;
+	
+	virtual void setActiveSceneCamera(Camera *camera) = 0;
 };
 
 #endif
