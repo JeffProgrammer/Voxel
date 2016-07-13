@@ -30,6 +30,12 @@
 
 #include "game/gameObject.hpp"
 
+GameObject::GameObject() {
+	mPosition = glm::vec3(0.0f);
+	mRotation = glm::quat(0.0f, 0.0f, 0.0f, 1.0f);
+	mScale = glm::vec3(0.0f);
+}
+
 void GameObject::setPosition(const glm::vec3 &pos) {
 	mPosition = pos;
 }

@@ -36,6 +36,8 @@
 
 class GameObject {
 public:
+	GameObject();
+	
 	void setPosition(const glm::vec3 &pos);
 	glm::vec3 getPosition() const;
 
