@@ -60,7 +60,8 @@ set(VOXEL_SRC
 	src/platform/event/interface/IMouseMovementEvent.hpp
 	src/platform/event/interface/IWindowEvent.cpp
 	src/platform/event/interface/IWindowEvent.hpp
-
+	src/platform/timer.cpp
+	src/platform/timer.hpp
 	src/platform/window.cpp
 	src/platform/window.hpp
 )
