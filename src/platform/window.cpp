@@ -41,6 +41,8 @@ Window::Window(const std::string &title, int width, int height, Flags flags, Con
 		sdlFlags |= SDL_WindowFlags::SDL_WINDOW_ALLOW_HIGHDPI;
 
 	mWindow = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, sdlFlags);
+	
+	SDL_GL_SetSwapInterval(1);
 
 	// Create a context and initialize it.
 	mContext = ContextFactory::createContext(api);

@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include "platform/window.hpp"
+#include "platform/timer.hpp"
 #include "platform/event/eventManager.hpp"
 #include "game/camera.hpp"
 #undef main
@@ -12,11 +13,17 @@ int main(int argc, const char **argv) {
 	Camera camera;
 	camera.setPosition(glm::vec3(3.0f, 3.0f, -3.0f));
 	RENDERER->setActiveSceneCamera(&camera);
-	while (gEventManager.pullEvents()) {
+	
+	Timer timer;
+	
+	while (gEventManager.pullEvents(timer.getDelta())) {
+		timer.start();
 		RENDERER->beginFrame();
 		RENDERER->renderSingleCube();
 		RENDERER->endFrame();
 		window->swapBuffers();
+		timer.stop();
+		printf("Dt: %f\n", timer.getDelta());
 	}
 	delete window;
 	

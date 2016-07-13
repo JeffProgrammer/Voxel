@@ -41,12 +41,12 @@ class IMouseButtonEvent;
 
 class EventManager {
 public:
-	bool pullEvents() const;
+	bool pullEvents(const double &delta) const;
 	
-	void dispatchKeyEvent(const SDL_Event &e) const;
-	void dispatchMouseButtonEvent(const SDL_Event &e) const;
-	void dispatchMouseMotionEvent(const SDL_Event &e) const;
-	void dispatchWindowEvent(const SDL_Event &e) const;
+	void dispatchKeyEvent(const SDL_Event &e, const double &delta) const;
+	void dispatchMouseButtonEvent(const SDL_Event &e, const double &delta) const;
+	void dispatchMouseMotionEvent(const SDL_Event &e, const double &delta) const;
+	void dispatchWindowEvent(const SDL_Event &e, const double &delta) const;
 
 	void addEvent(IKeyboardEvent *inputEvent);
 	void addEvent(IWindowEvent *windowEvent);

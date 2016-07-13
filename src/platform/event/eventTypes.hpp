@@ -34,24 +34,28 @@
 #include <SDL.h>
 #include <glm/glm.hpp>
 
-struct WindowEvent {
+struct Event {
+	double frameDelta;
+};
+
+struct WindowEvent : public Event {
 	bool gainedFocus;
 	bool lostFocus;
 };
 
-struct MouseMovementEvent {
+struct MouseMovementEvent : public Event {
 	glm::vec2 mouseDelta;
 	glm::vec2 mousePosition;
 };
 
-struct MouseButtonEvent {
+struct MouseButtonEvent : public Event {
 	bool leftClick;
 	bool rightClick;
 	bool middleClick;
 	bool doubleClick;
 };
 
-struct KeyboardEvent {
+struct KeyboardEvent : public Event {
 	bool isPressedDown;
 	SDL_Scancode scanCode;
 };

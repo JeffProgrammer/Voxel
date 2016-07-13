@@ -38,23 +38,23 @@
 
 EventManager gEventManager;
 
-bool EventManager::pullEvents() const {
+bool EventManager::pullEvents(const double &delta) const {
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
 		switch (e.type) {
 			case SDL_EventType::SDL_KEYDOWN:
 			case SDL_EventType::SDL_KEYUP:
-				dispatchKeyEvent(e);
+				dispatchKeyEvent(e, delta);
 				break;
 			case SDL_EventType::SDL_MOUSEBUTTONDOWN:
 			case SDL_EventType::SDL_MOUSEBUTTONUP:
-				dispatchMouseButtonEvent(e);
+				dispatchMouseButtonEvent(e, delta);
 				break;
 			case SDL_EventType::SDL_MOUSEMOTION:
-				dispatchMouseMotionEvent(e);
+				dispatchMouseMotionEvent(e, delta);
 				break;
 			case SDL_EventType::SDL_WINDOWEVENT:
-				dispatchWindowEvent(e);
+				dispatchWindowEvent(e, delta);
 				break;
 			case SDL_EventType::SDL_QUIT:
 				return false;
@@ -63,8 +63,9 @@ bool EventManager::pullEvents() const {
 	return true;
 }
 
-void EventManager::dispatchKeyEvent(const SDL_Event &e) const {
+void EventManager::dispatchKeyEvent(const SDL_Event &e, const double &delta) const {
 	KeyboardEvent ev;
+	ev.frameDelta = delta;
 	ev.isPressedDown = (e.type == SDL_EventType::SDL_KEYDOWN);
 	ev.scanCode = e.key.keysym.scancode;
 	
@@ -73,8 +74,9 @@ void EventManager::dispatchKeyEvent(const SDL_Event &e) const {
 	}
 }
 
-void EventManager::dispatchMouseButtonEvent(const SDL_Event &e) const {
+void EventManager::dispatchMouseButtonEvent(const SDL_Event &e, const double &delta) const {
 	MouseButtonEvent ev;
+	ev.frameDelta = delta;
 	ev.leftClick = e.button.button == SDL_BUTTON_LEFT;
 	ev.rightClick = e.button.button == SDL_BUTTON_RIGHT;
 	ev.middleClick = e.button.button == SDL_BUTTON_MIDDLE;
@@ -85,8 +87,9 @@ void EventManager::dispatchMouseButtonEvent(const SDL_Event &e) const {
 	}
 }
 
-void EventManager::dispatchMouseMotionEvent(const SDL_Event &e) const {
+void EventManager::dispatchMouseMotionEvent(const SDL_Event &e, const double &delta) const {
 	MouseMovementEvent ev;
+	ev.frameDelta = delta;
 	ev.mousePosition = glm::vec2(e.motion.x, e.motion.y);
 	ev.mouseDelta = glm::vec2(e.motion.xrel, e.motion.yrel);
 	
@@ -95,8 +98,9 @@ void EventManager::dispatchMouseMotionEvent(const SDL_Event &e) const {
 	}
 }
 
-void EventManager::dispatchWindowEvent(const SDL_Event &e) const {
+void EventManager::dispatchWindowEvent(const SDL_Event &e, const double &delta) const {
 	WindowEvent ev;
+	ev.frameDelta = delta;
 	ev.gainedFocus = e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED;
 	ev.lostFocus = e.window.event == SDL_WINDOWEVENT_FOCUS_LOST;
 	

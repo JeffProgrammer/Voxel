@@ -38,7 +38,7 @@
 class Camera : public GameObject, public IMouseMovementEvent, public IKeyboardEvent {
 public:
 	const float MOUSE_SENSATIVITY = 0.15f;
-	const float CAMERA_MOVEMENT_SPEED = 5.0f;
+	const float CAMERA_MOVEMENT_SPEED = 7.5f;
 	
 	Camera();
 	

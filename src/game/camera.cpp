@@ -74,18 +74,19 @@ void Camera::processKeyboard(const KeyboardEvent &e) {
 	if (!e.isPressedDown)
 		return;
 	
+	float delta = static_cast<float>(e.frameDelta);
 	switch (e.scanCode) {
 		case SDL_SCANCODE_W:
-			mPosition += CAMERA_MOVEMENT_SPEED * 0.016f * mFrontVector; // todo: delta time.
+			mPosition += CAMERA_MOVEMENT_SPEED * delta * mFrontVector;
 			break;
 		case SDL_SCANCODE_S:
-			mPosition -= CAMERA_MOVEMENT_SPEED * 0.016f * mFrontVector; // todo: delta time.
+			mPosition -= CAMERA_MOVEMENT_SPEED * delta * mFrontVector;
 			break;
 		case SDL_SCANCODE_A:
-			mPosition -= CAMERA_MOVEMENT_SPEED * 0.016f * glm::normalize(glm::cross(mFrontVector, mUpVector)); // todo: delta time.
+			mPosition -= CAMERA_MOVEMENT_SPEED * delta * glm::normalize(glm::cross(mFrontVector, mUpVector));
 			break;
 		case SDL_SCANCODE_D:
-			mPosition += CAMERA_MOVEMENT_SPEED * 0.016f * glm::normalize(glm::cross(mFrontVector, mUpVector)); // todo: delta time.
+			mPosition += CAMERA_MOVEMENT_SPEED * delta * glm::normalize(glm::cross(mFrontVector, mUpVector));
 			break;
 		default:
 			// Nothing.
