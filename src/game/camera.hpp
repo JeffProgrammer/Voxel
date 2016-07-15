@@ -37,8 +37,8 @@
 
 class Camera : public GameObject, public IMouseMovementEvent, public IKeyboardEvent {
 public:
-	const float MOUSE_SENSATIVITY = 0.15f;
-	const float CAMERA_MOVEMENT_SPEED = 7.5f;
+	const F32 MOUSE_SENSATIVITY = 0.15f;
+	const F32 CAMERA_MOVEMENT_SPEED = 7.5f;
 	
 	Camera();
 	
@@ -51,8 +51,8 @@ public:
 	glm::vec3 getUpVector() const;
 	
 private:
-	float mPitch;
-	float mYaw;
+	F32 mPitch;
+	F32 mYaw;
 	
 	glm::vec3 mFrontVector;
 	glm::vec3 mUpVector;

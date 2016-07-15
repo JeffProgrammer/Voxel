@@ -30,6 +30,7 @@
 
 #include <assert.h>
 #include "core/algorithm.hpp"
+#include "core/types.hpp"
 #include "platform/event/eventManager.hpp"
 #include "platform/event/interface/IKeyboardEvent.hpp"
 #include "platform/event/interface/IMouseButtonEvent.hpp"
@@ -38,7 +39,7 @@
 
 EventManager gEventManager;
 
-bool EventManager::pullEvents(const double &delta) const {
+bool EventManager::pullEvents(const F64 &delta) const {
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
 		switch (e.type) {
@@ -63,7 +64,7 @@ bool EventManager::pullEvents(const double &delta) const {
 	return true;
 }
 
-void EventManager::dispatchKeyEvent(const SDL_Event &e, const double &delta) const {
+void EventManager::dispatchKeyEvent(const SDL_Event &e, const F64 &delta) const {
 	KeyboardEvent ev;
 	ev.frameDelta = delta;
 	ev.isPressedDown = (e.type == SDL_EventType::SDL_KEYDOWN);
@@ -74,7 +75,7 @@ void EventManager::dispatchKeyEvent(const SDL_Event &e, const double &delta) con
 	}
 }
 
-void EventManager::dispatchMouseButtonEvent(const SDL_Event &e, const double &delta) const {
+void EventManager::dispatchMouseButtonEvent(const SDL_Event &e, const F64 &delta) const {
 	MouseButtonEvent ev;
 	ev.frameDelta = delta;
 	ev.leftClick = e.button.button == SDL_BUTTON_LEFT;
@@ -87,7 +88,7 @@ void EventManager::dispatchMouseButtonEvent(const SDL_Event &e, const double &de
 	}
 }
 
-void EventManager::dispatchMouseMotionEvent(const SDL_Event &e, const double &delta) const {
+void EventManager::dispatchMouseMotionEvent(const SDL_Event &e, const F64 &delta) const {
 	MouseMovementEvent ev;
 	ev.frameDelta = delta;
 	ev.mousePosition = glm::vec2(e.motion.x, e.motion.y);
@@ -98,7 +99,7 @@ void EventManager::dispatchMouseMotionEvent(const SDL_Event &e, const double &de
 	}
 }
 
-void EventManager::dispatchWindowEvent(const SDL_Event &e, const double &delta) const {
+void EventManager::dispatchWindowEvent(const SDL_Event &e, const F64 &delta) const {
 	WindowEvent ev;
 	ev.frameDelta = delta;
 	ev.gainedFocus = e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED;

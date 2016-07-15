@@ -59,8 +59,8 @@ void Camera::processMouseMovement(const MouseMovementEvent &e) {
 	mPitch = glm::clamp(mPitch, -89.999f, 89.999f);
 	
 	// convert yaw/pitch to radians.
-	float yaw = glm::radians(mYaw);
-	float pitch = glm::radians(mPitch);
+	const F32 yaw = glm::radians(mYaw);
+	const F32 pitch = glm::radians(mPitch);
 	
 	// Adjust front vector
 	glm::vec3 front(0.0f);
@@ -74,7 +74,7 @@ void Camera::processKeyboard(const KeyboardEvent &e) {
 	if (!e.isPressedDown)
 		return;
 	
-	float delta = static_cast<float>(e.frameDelta);
+	F32 delta = static_cast<F32>(e.frameDelta);
 	switch (e.scanCode) {
 		case SDL_SCANCODE_W:
 			mPosition += CAMERA_MOVEMENT_SPEED * delta * mFrontVector;

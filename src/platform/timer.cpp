@@ -51,9 +51,9 @@ void Timer::stop() {
 	mFlag = true;
 	
 	// Calculate delta
-	mDelta = static_cast<double>(((SDL_GetPerformanceCounter() - mStart) * 1000) / mFrequency) / 1000.0;
+	mDelta = static_cast<F64>(((SDL_GetPerformanceCounter() - mStart) * 1000) / mFrequency) / 1000.0;
 }
 
-double Timer::getDelta() const {
+F64 Timer::getDelta() const {
 	return mDelta;
 }

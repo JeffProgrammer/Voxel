@@ -33,6 +33,7 @@
 #define _PLATFORM_TIMER_HPP_
 
 #include <SDL.h>
+#include "core/types.hpp"
 
 class Timer {
 public:
@@ -41,12 +42,12 @@ public:
 	void start();
 	void stop();
 	
-	double getDelta() const;
+	F64 getDelta() const;
 	
 private:
-	Uint64 mFrequency;
-	Uint64 mStart;
-	double mDelta;
+	U64 mFrequency;
+	U64 mStart;
+	F64 mDelta;
 	
 	/**
 	 * false  : Timer running.

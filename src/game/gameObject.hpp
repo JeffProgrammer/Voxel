@@ -33,6 +33,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include "core/types.hpp"
 
 class GameObject {
 public:

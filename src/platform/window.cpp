@@ -30,9 +30,9 @@
 
 #include "platform/window.hpp"
 
-Window::Window(const std::string &title, int width, int height, Flags flags, ContextAPI api) {
+Window::Window(const std::string &title, S32 width, S32 height, Flags flags, ContextAPI api) {
 	// Setup window flags
-	unsigned int sdlFlags = SDL_WindowFlags::SDL_WINDOW_SHOWN;
+	U32 sdlFlags = SDL_WindowFlags::SDL_WINDOW_SHOWN;
 	if (api == ContextAPI::OpenGL)
 		sdlFlags |= SDL_WindowFlags::SDL_WINDOW_OPENGL;
 	if (flags & Flags::FULLSCREEN)

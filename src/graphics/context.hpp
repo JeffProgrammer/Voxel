@@ -31,11 +31,12 @@
 #ifndef _GRAPHICS_CONTEXT_HPP_
 #define _GRAPHICS_CONTEXT_HPP_
 
+#include "core/types.hpp"
 #include "graphics/renderer.hpp"
 
 class Window;
 
-enum ContextAPI : int {
+enum ContextAPI : S32 {
 	OpenGL,
 	// WebGL,
 	D3D11

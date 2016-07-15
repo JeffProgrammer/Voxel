@@ -33,19 +33,19 @@
 
 #include <string>
 #include <SDL.h>
-
+#include "core/types.hpp"
 #include "graphics/context.hpp"
 #include "platform/event/interface/IKeyboardEvent.hpp"
 
 class Window : public IKeyboardEvent {
 public:
-	enum Flags : int {
+	enum Flags : S32 {
 		NONE,
 		FULLSCREEN,
 		HIGHDPI
 	};
 
-	Window(const std::string &title, int width, int height, Flags flags, ContextAPI api);
+	Window(const std::string &title, S32 width, S32 height, Flags flags, ContextAPI api);
 	~Window();
 
 	SDL_Window* getSDLWindow() const {

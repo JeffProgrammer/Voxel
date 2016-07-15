@@ -33,9 +33,10 @@
 
 #include <SDL.h>
 #include <glm/glm.hpp>
+#include "core/types.hpp"
 
 struct Event {
-	double frameDelta;
+	F64 frameDelta;
 };
 
 struct WindowEvent : public Event {
