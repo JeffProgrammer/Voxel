@@ -47,6 +47,8 @@ public:
 	void setScale(const glm::vec3 &scale);
 	glm::vec3 getScale() const;
 
+	virtual void update(const double &delta);
+
 protected:
 	glm::quat mRotation;
 	glm::vec3 mPosition;
