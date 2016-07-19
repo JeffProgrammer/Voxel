@@ -41,7 +41,7 @@ const char *vertCubeSrc =
 	"   float3 position : POSITION;"
 	"};"
 
-	"STRUCT Output {"
+	"struct Output {"
 	"   float4 position : SV_POSITION;"
 	"   float4 color : COLOR;"
 	"};"
