@@ -69,6 +69,10 @@ const char *fragCubeSrc =
 	"   return input.color;"
 	"};";
 
+D3D11_INPUT_ELEMENT_DESC *gInputDescription;
+ID3D11Buffer *gVBO;
+ID3D11Buffer *gIBO;
+
 void D3D11Renderer::initRenderer() {
 	mCamera = nullptr;
 
@@ -135,6 +139,44 @@ void D3D11Renderer::initRenderer() {
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
 	mContext->RSSetViewports(1, &viewport);
+
+	//
+	// Single cube stuffs
+	//
+
+	// Create input layout
+	gInputDescription = new D3D11_INPUT_ELEMENT_DESC[1];
+	gInputDescription[0] = { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0};
+
+	// Create Vertex buffer
+	D3D11_BUFFER_DESC vbo;
+	vbo.Usage = D3D11_USAGE_DEFAULT;
+	vbo.ByteWidth = sizeof(F32) * 3;
+	vbo.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vbo.CPUAccessFlags = 0;
+	vbo.MiscFlags = 0;
+
+	D3D11_SUBRESOURCE_DATA vboData;
+	vboData.pSysMem = cubeVertices;
+	vboData.SysMemPitch = 0;
+	vboData.SysMemSlicePitch = 0;
+
+	mDevice->CreateBuffer(&vbo, &vboData, &gVBO);
+
+	// Create Index Buffer
+	D3D11_BUFFER_DESC ibo;
+	ibo.Usage = D3D11_USAGE_DEFAULT;
+	ibo.ByteWidth = sizeof(U16);
+	ibo.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	vbo.CPUAccessFlags = 0;
+	vbo.MiscFlags = 0;
+
+	D3D11_SUBRESOURCE_DATA iboData;
+	iboData.pSysMem = cubeIndices;
+	iboData.SysMemPitch = 0;
+	iboData.SysMemSlicePitch = 0;
+
+	mDevice->CreateBuffer(&ibo, &iboData, &gIBO);
 }
 
 void D3D11Renderer::destroyRenderer() {
@@ -161,6 +203,11 @@ void D3D11Renderer::renderSingleCube() {
 	
 	glm::mat4 view = glm::lookAt(mCamera->getPosition(), mCamera->getPosition() + mCamera->getFrontVector(), mCamera->getUpVector());
 	glm::mat4 proj = glm::perspective(glm::radians(90.0f), 1440.f/900.f, 0.02f, 200.0f);
+
+	mContext->IASetVertexBuffers(0, 1, &gVBO, nullptr, nullptr);
+	mContext->IASetIndexBuffer(gIBO, DXGI_FORMAT_R16_UINT, 0);
+	mContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	mContext->DrawIndexed(36, 0, 0);
 }
 
 void D3D11Renderer::setActiveSceneCamera(Camera *camera) {
