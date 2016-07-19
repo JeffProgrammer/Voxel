@@ -60,6 +60,6 @@ glm::vec3 GameObject::getScale() const {
 	return mScale;
 }
 
-void GameObject::update(const double &delta) {
+void GameObject::update(const F64 &delta) {
 
 }

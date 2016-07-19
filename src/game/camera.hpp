@@ -50,7 +50,7 @@ public:
 	glm::vec3 getFrontVector() const;
 	glm::vec3 getUpVector() const;
 
-	virtual void update(const double &delta) override;
+	virtual void update(const F64 &delta) override;
 	
 private:
 	F32 mPitch;

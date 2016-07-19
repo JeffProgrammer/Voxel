@@ -40,7 +40,7 @@ Camera::Camera() {
 	mMove = { false, false, false, false };
 }
 
-void Camera::getYawPitch(float &yaw, float &pitch) const {
+void Camera::getYawPitch(F32 &yaw, F32 &pitch) const {
 	yaw = mYaw;
 	pitch = mPitch;
 }
@@ -92,8 +92,8 @@ void Camera::processKeyboard(const KeyboardEvent &e) {
 	}
 }
 
-void Camera::update(const double &delta) {
-	float dt = static_cast<float>(delta);
+void Camera::update(const F64 &delta) {
+	F32 dt = static_cast<F32>(delta);
 
 	if (mMove.forward)
 		mPosition += CAMERA_MOVEMENT_SPEED * dt * mFrontVector;
