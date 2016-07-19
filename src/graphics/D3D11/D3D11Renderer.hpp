@@ -31,6 +31,7 @@
 #ifndef _GRAPHICS_D3D11_D3D11RENDERER_HPP_
 #define _GRAPHICS_D3D11_D3D11RENDERER_HPP_
 
+#include <d3d11.h>
 #include "graphics/renderer.hpp"
 #include "game/camera.hpp"
 
@@ -49,9 +50,18 @@ public:
 	virtual void renderSingleCube() override;
 	
 	virtual void setActiveSceneCamera(Camera *camera) override;
+
+	void swapBuffers();
+	void setWindowHandle(HWND window);
 	
 protected:
 	Camera *mCamera;
+
+	HWND mWindow;
+	IDXGISwapChain *mSwapChain;
+	ID3D11Device *mDevice;
+	ID3D11DeviceContext *mContext;
+	ID3D11RenderTargetView *mRenderTargetView;
 };
 
 #endif // _GRAPHICS_D3D11_D3D11RENDERER_HPP_

@@ -30,6 +30,7 @@
 
 #include "graphics/D3D11/D3D11Context.hpp"
 #include "graphics/D3D11/D3D11Renderer.hpp"
+#include "platform/window.hpp"
 
 D3D11Context::D3D11Context() {
 
@@ -37,16 +38,17 @@ D3D11Context::D3D11Context() {
 
 void D3D11Context::initContext() {
 	mRenderer = new D3D11Renderer();
-
-	
+	static_cast<D3D11Renderer*>(mRenderer)->setWindowHandle(mWindow->getWindowHandle());
+	mRenderer->initRenderer();
 }
 
 void D3D11Context::destroy() {
-
+	mRenderer->destroyRenderer();
+	delete mRenderer;
 }
 
 void D3D11Context::swapBuffers() const {
-
+	static_cast<D3D11Renderer*>(mRenderer)->swapBuffers();
 }
 
 Renderer* D3D11Context::getRenderer() const {

@@ -24,7 +24,7 @@ int main(int argc, const char **argv) {
 #endif
 
 	// create window and pause for 1 second.
-	Window *window = new Window("Test", 1440, 900, Window::Flags::NONE, ContextAPI::OpenGL);
+	Window *window = new Window("Test", 1440, 900, Window::Flags::NONE, api);
 	Camera camera;
 	camera.setPosition(glm::vec3(3.0f, 3.0f, -3.0f));
 	RENDERER->setActiveSceneCamera(&camera);

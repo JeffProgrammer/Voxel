@@ -95,6 +95,9 @@ if (WIN32)
 	set (VOXEL_LIBRARIES
 		${VOXEL_LIBRARIES}
 		OpenGL32
+		
+		D3D11
+		D3DCompiler
 	)
 endif()
 
