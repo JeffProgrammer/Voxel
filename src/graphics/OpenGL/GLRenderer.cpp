@@ -100,6 +100,9 @@ void GLRenderer::initRenderer() {
 	// Set Clear color
 	glClearColor(0.0f, 1.0f, 1.0f, 0.5f);
 	
+	// Set viewport
+	glViewport(0, 0, 1440, 900);
+
 	glEnable(GL_DEPTH_TEST);
 	checkError("glEnable-DepthTest");
 	glDepthFunc(GL_LESS);
