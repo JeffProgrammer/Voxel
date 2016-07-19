@@ -61,7 +61,7 @@ public:
 	
 	virtual void processKeyboard(const KeyboardEvent &keyboardEvent) override;
 
-#ifdef WIN32
+#ifdef _WIN32
 	HWND getWindowHandle() const;
 #endif
 
