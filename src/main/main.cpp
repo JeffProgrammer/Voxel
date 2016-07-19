@@ -5,8 +5,23 @@
 #include "game/camera.hpp"
 #undef main
 
+#include <Windows.h>
+
 int main(int argc, const char **argv) {
 	SDL_Init(SDL_INIT_EVERYTHING);
+
+	ContextAPI api = ContextAPI::OpenGL;
+
+	// Need Windows 8 SDK to compile with D3D11 runtime we use.
+#if _WIN32_WINNT >= 0x602
+	for (int i = 0; i < argc; ++i) {
+		if (SDL_strcasecmp(argv[i], "-d3d11") == 0) {
+			// If we pass -d3d11 then run in DX11 mode.
+			api = ContextAPI::D3D11;
+			break;
+		}
+	}
+#endif
 
 	// create window and pause for 1 second.
 	Window *window = new Window("Test", 1440, 900, Window::Flags::NONE, ContextAPI::OpenGL);
