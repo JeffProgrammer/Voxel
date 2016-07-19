@@ -28,6 +28,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //-----------------------------------------------------------------------------
 
+#include <SDL_syswm.h>
 #include "platform/window.hpp"
 
 Window::Window(const std::string &title, S32 width, S32 height, Flags flags, ContextAPI api) {
@@ -72,3 +73,14 @@ void Window::processKeyboard(const KeyboardEvent &keyboardEvent) {
 	if (keyboardEvent.isPressedDown && keyboardEvent.scanCode == SDL_SCANCODE_ESCAPE)
 		lockCursor(!SDL_ShowCursor(SDL_QUERY));
 }
+
+#ifdef _WIN32
+HWND Window::getWindowHandle() const {
+	SDL_SysWMinfo info;
+	SDL_VERSION(&info.version);
+	if (!SDL_GetWindowWMInfo(mWindow, &info))
+		return nullptr;
+
+	return info.info.win.window;
+}
+#endif

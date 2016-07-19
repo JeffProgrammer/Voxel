@@ -37,6 +37,10 @@
 #include "graphics/context.hpp"
 #include "platform/event/interface/IKeyboardEvent.hpp"
 
+#ifdef _WIN32
+	#include <Windows.h>
+#endif
+
 class Window : public IKeyboardEvent {
 public:
 	enum Flags : S32 {
@@ -56,6 +60,10 @@ public:
 	void lockCursor(bool lock);
 	
 	virtual void processKeyboard(const KeyboardEvent &keyboardEvent) override;
+
+#ifdef WIN32
+	HWND getWindowHandle() const;
+#endif
 
 private:
 	SDL_Window *mWindow;
