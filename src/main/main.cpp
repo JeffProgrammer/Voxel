@@ -17,13 +17,14 @@ int main(int argc, const char **argv) {
 	Timer timer;
 	
 	while (gEventManager.pullEvents(timer.getDelta())) {
+		camera.update(timer.getDelta());
+
 		timer.start();
 		RENDERER->beginFrame();
 		RENDERER->renderSingleCube();
 		RENDERER->endFrame();
 		window->swapBuffers();
 		timer.stop();
-		printf("Dt: %f\n", timer.getDelta());
 	}
 	delete window;
 	
