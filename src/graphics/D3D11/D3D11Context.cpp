@@ -29,11 +29,26 @@
 //-----------------------------------------------------------------------------
 
 #include "graphics/D3D11/D3D11Context.hpp"
+#include "graphics/D3D11/D3D11Renderer.hpp"
+
+D3D11Context::D3D11Context() {
+
+}
 
 void D3D11Context::initContext() {
+	mRenderer = new D3D11Renderer();
 
+	
 }
 
 void D3D11Context::destroy() {
 
+}
+
+void D3D11Context::swapBuffers() const {
+
+}
+
+Renderer* D3D11Context::getRenderer() const {
+	return mRenderer;
 }

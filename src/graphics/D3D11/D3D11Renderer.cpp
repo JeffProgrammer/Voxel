@@ -28,21 +28,42 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //-----------------------------------------------------------------------------
 
-#ifndef _GRAPHICS_D3D11_D3D11CONTEXT_HPP_
-#define _GRAPHICS_D3D11_D3D11CONTEXT_HPP_
+#include <iostream>
+#include <vector>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include "graphics/D3D11/D3D11Renderer.hpp"
+#include "core/cube.hpp"
+#include "game/camera.hpp"
 
-#include "graphics/context.hpp"
+void D3D11Renderer::initRenderer() {
+	mCamera = nullptr;
+}
 
-class D3D11Context : public Context {
-public:
-	D3D11Context();
+void D3D11Renderer::destroyRenderer() {
 
-	virtual void destroy() override;
-	virtual void swapBuffers() const override;
-	virtual Renderer* getRenderer() const override;
+}
 
-protected:
-	virtual void initContext() override;
-};
+void D3D11Renderer::beginFrame() {
 
-#endif // _GRAPHICS_D3D11_D3D11CONTEXT_HPP_
+}
+
+void D3D11Renderer::renderChunks() {
+
+}
+
+void D3D11Renderer::endFrame() {
+	
+}
+
+void D3D11Renderer::renderSingleCube() {
+	if (mCamera == nullptr)
+		return;
+	
+	glm::mat4 view = glm::lookAt(mCamera->getPosition(), mCamera->getPosition() + mCamera->getFrontVector(), mCamera->getUpVector());
+	glm::mat4 proj = glm::perspective(glm::radians(90.0f), 1440.f/900.f, 0.02f, 200.0f);
+}
+
+void D3D11Renderer::setActiveSceneCamera(Camera *camera) {
+	mCamera = camera;
+}

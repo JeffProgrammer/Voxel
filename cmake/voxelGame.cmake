@@ -72,6 +72,8 @@ if (WIN32)
 		${VOXEL_SRC}
 		src/graphics/D3D11/D3D11Context.cpp
 		src/graphics/D3D11/D3D11Context.hpp
+		src/graphics/D3D11/D3D11Renderer.cpp
+		src/graphics/D3D11/D3D11Renderer.hpp
 	)
 endif()
 

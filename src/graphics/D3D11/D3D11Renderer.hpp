@@ -28,21 +28,30 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //-----------------------------------------------------------------------------
 
-#ifndef _GRAPHICS_D3D11_D3D11CONTEXT_HPP_
-#define _GRAPHICS_D3D11_D3D11CONTEXT_HPP_
+#ifndef _GRAPHICS_D3D11_D3D11RENDERER_HPP_
+#define _GRAPHICS_D3D11_D3D11RENDERER_HPP_
 
-#include "graphics/context.hpp"
+#include "graphics/renderer.hpp"
+#include "game/camera.hpp"
 
-class D3D11Context : public Context {
+class D3D11Renderer : public Renderer {
 public:
-	D3D11Context();
-
-	virtual void destroy() override;
-	virtual void swapBuffers() const override;
-	virtual Renderer* getRenderer() const override;
-
+	virtual void initRenderer() override;
+	
+	virtual void destroyRenderer() override;
+	
+	virtual void beginFrame() override;
+	
+	virtual void renderChunks() override;
+	
+	virtual void endFrame() override;
+	
+	virtual void renderSingleCube() override;
+	
+	virtual void setActiveSceneCamera(Camera *camera) override;
+	
 protected:
-	virtual void initContext() override;
+	Camera *mCamera;
 };
 
-#endif // _GRAPHICS_D3D11_D3D11CONTEXT_HPP_
+#endif // _GRAPHICS_D3D11_D3D11RENDERER_HPP_
