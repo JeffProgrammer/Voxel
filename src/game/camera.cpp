@@ -36,6 +36,8 @@ Camera::Camera() {
 	
 	mYaw = -90.0f;
 	mPitch = 0.0f;
+
+	mMove = { false, false, false, false };
 }
 
 void Camera::getYawPitch(float &yaw, float &pitch) const {
@@ -71,25 +73,34 @@ void Camera::processMouseMovement(const MouseMovementEvent &e) {
 }
 
 void Camera::processKeyboard(const KeyboardEvent &e) {
-	if (!e.isPressedDown)
-		return;
-	
-	F32 delta = static_cast<F32>(e.frameDelta);
 	switch (e.scanCode) {
 		case SDL_SCANCODE_W:
-			mPosition += CAMERA_MOVEMENT_SPEED * delta * mFrontVector;
+			mMove.forward = e.isPressedDown;
 			break;
 		case SDL_SCANCODE_S:
-			mPosition -= CAMERA_MOVEMENT_SPEED * delta * mFrontVector;
+			mMove.backward = e.isPressedDown;
 			break;
 		case SDL_SCANCODE_A:
-			mPosition -= CAMERA_MOVEMENT_SPEED * delta * glm::normalize(glm::cross(mFrontVector, mUpVector));
+			mMove.left = e.isPressedDown;
 			break;
 		case SDL_SCANCODE_D:
-			mPosition += CAMERA_MOVEMENT_SPEED * delta * glm::normalize(glm::cross(mFrontVector, mUpVector));
+			mMove.right = e.isPressedDown;
 			break;
 		default:
 			// Nothing.
 			break;
 	}
+}
+
+void Camera::update(const double &delta) {
+	float dt = static_cast<float>(delta);
+
+	if (mMove.forward)
+		mPosition += CAMERA_MOVEMENT_SPEED * dt * mFrontVector;
+	if (mMove.backward)
+		mPosition -= CAMERA_MOVEMENT_SPEED * dt * mFrontVector;
+	if (mMove.left)
+		mPosition -= CAMERA_MOVEMENT_SPEED * dt * glm::normalize(glm::cross(mFrontVector, mUpVector));
+	if (mMove.right)
+		mPosition += CAMERA_MOVEMENT_SPEED * dt * glm::normalize(glm::cross(mFrontVector, mUpVector));
 }

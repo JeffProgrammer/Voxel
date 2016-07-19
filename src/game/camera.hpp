@@ -49,10 +49,19 @@ public:
 	
 	glm::vec3 getFrontVector() const;
 	glm::vec3 getUpVector() const;
+
+	virtual void update(const double &delta) override;
 	
 private:
 	F32 mPitch;
 	F32 mYaw;
+	
+	struct Move {
+		bool forward;
+		bool backward;
+		bool left;
+		bool right;
+	} mMove;
 	
 	glm::vec3 mFrontVector;
 	glm::vec3 mUpVector;

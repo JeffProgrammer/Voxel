@@ -220,28 +220,27 @@ void GLRenderer::renderSingleCube() {
 	
 	glm::mat4 view = glm::lookAt(mCamera->getPosition(), mCamera->getPosition() + mCamera->getFrontVector(), mCamera->getUpVector());
 	glm::mat4 proj = glm::perspective(glm::radians(90.0f), 1440.f/900.f, 0.02f, 200.0f);
-	glm::mat4 model = glm::mat4(1.0f);
 	
 	glUseProgram(singleCubeProgram);
-	checkError("glUseProgram");
 	
 	glEnableVertexAttribArray(locationPosition);
 	glVertexAttribPointer(locationPosition, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
 	
-	glUniformMatrix4fv(locationModel, 1, false, &model[0][0]);
-	checkError("glUniformMatrix4fv-model");
 	glUniformMatrix4fv(locationView, 1, false, &view[0][0]);
-	checkError("glUniformMatrix4fv-view");
 	glUniformMatrix4fv(locationProj, 1, false, &proj[0][0]);
-	checkError("glUniformMatrix4fv-projection");
-	
+
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	checkError("glBindBuffer-VBO");
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	checkError("glBindBuffer-IBO");
-	
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
-	checkError("glDrawElements");
+
+	for (int x = 0; x < 16; ++x) {
+		for (int z = 0; z < 16; ++z) {
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::translate(model, glm::vec3(float(x), 0.0f, float(z)));
+			glUniformMatrix4fv(locationModel, 1, false, &model[0][0]);
+
+			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
+		}
+	}
 }
 
 void GLRenderer::setActiveSceneCamera(Camera *camera) {

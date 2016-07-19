@@ -59,3 +59,7 @@ void GameObject::setScale(const glm::vec3 &scale) {
 glm::vec3 GameObject::getScale() const {
 	return mScale;
 }
+
+void GameObject::update(const double &delta) {
+
+}
