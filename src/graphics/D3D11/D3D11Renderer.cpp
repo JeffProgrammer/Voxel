@@ -36,6 +36,39 @@
 #include "core/cube.hpp"
 #include "game/camera.hpp"
 
+const char *vertCubeSrc =
+	"struct Input {"
+	"   float3 position : POSITION;"
+	"};"
+
+	"STRUCT Output {"
+	"   float4 position : SV_POSITION;"
+	"   float4 color : COLOR;"
+	"};"
+
+	"cbuffer matrices : register(b0) {"
+	"   matrix model : packoffset(c0);"
+	"   matrix view : packoffset(c4);"
+	"   matrix projection : packoffset(c8);"
+	"};"
+
+	"Output VSMain(Input input) {"
+	"   matrix mvp = mul(mul(projection * view), model);"
+	"   Output output;"
+	"   output.position = mul(input.position, mvp);"
+	"   output.color = float4(1.0, 0.0, 0.0, 1.0);"
+	"   return output;"
+	"};";
+
+const char *fragCubeSrc =
+	"struct Input {"
+	"   float4 color : COLOR;"
+	"};"
+
+	"float4 PSMain(Input input) {"
+	"   return input.color;"
+	"};";
+
 void D3D11Renderer::initRenderer() {
 	mCamera = nullptr;
 
