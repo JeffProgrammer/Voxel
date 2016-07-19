@@ -40,6 +40,7 @@
 // temporary for a single cube until I figure out how to manage materials and
 // shaders.
 GLuint buffer, ibo;
+GLuint cubeVAO;
 
 GLuint cubeVert = 0;
 GLuint fragVert = 0;
@@ -184,16 +185,26 @@ void GLRenderer::initRenderer() {
 	glBindBuffer(GL_UNIFORM_BUFFER, ubo);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(uniformData), &uniformData, GL_DYNAMIC_DRAW);
 	
-	glGenBuffers(1, &buffer);
-	glGenBuffers(1, &ibo);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 24 * 3, cubeVertices, GL_STATIC_DRAW);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * 36, cubeIndices, GL_STATIC_DRAW);
+	glGenVertexArrays(1, &cubeVAO);
+	glBindVertexArray(cubeVAO);
+	{
+		glGenBuffers(1, &buffer);
+		glGenBuffers(1, &ibo);
+		glBindBuffer(GL_ARRAY_BUFFER, buffer);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 24 * 3, cubeVertices, GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * 36, cubeIndices, GL_STATIC_DRAW);
+
+		glEnableVertexAttribArray(locationPosition);
+		glVertexAttribPointer(locationPosition, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
+	}
+	glBindVertexArray(mGlobalVAO);
 }
 
 void GLRenderer::destroyRenderer() {
+	glDeleteVertexArrays(1, &cubeVAO);
+
 	// Delete the VAO
 	if (glIsVertexArray(mGlobalVAO)) {
 		glDeleteVertexArrays(1, &mGlobalVAO);
@@ -227,17 +238,13 @@ void GLRenderer::renderSingleCube() {
 	
 	glUseProgram(singleCubeProgram);
 	
-	glEnableVertexAttribArray(locationPosition);
-	glVertexAttribPointer(locationPosition, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
-	
 	// Update the UBO's data.
 	glBindBuffer(GL_UNIFORM_BUFFER, ubo);
 	glBufferSubData(GL_UNIFORM_BUFFER, offsetof(UBO, view), sizeof(glm::mat4), &view[0][0]);
 	glBufferSubData(GL_UNIFORM_BUFFER, offsetof(UBO, projection), sizeof(glm::mat4), &proj[0][0]);
 
 	// Bind buffers to shaders
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	glBindVertexArray(cubeVAO);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, ubo); // bind to register 0
 	glUniformBlockBinding(singleCubeProgram, uboBlockIndex, 0); // bind to register 0
 
