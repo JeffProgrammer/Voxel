@@ -45,19 +45,27 @@ GLuint cubeVert = 0;
 GLuint fragVert = 0;
 GLuint singleCubeProgram;
 
-GLuint locationModel;
-GLuint locationView;
-GLuint locationProj;
 GLuint locationPosition;
+
+GLuint ubo;
+GLuint uboBlockIndex;
+
+struct UBO {
+	glm::mat4 model;
+	glm::mat4 view;
+	glm::mat4 projection;
+} uniformData;
 
 const char *vertSingleCubeSrc =
 	"#version 330 core\n"
 
 	"layout (location = 0) in vec3 position;\n"
 
-	"uniform mat4 model;\n"
-	"uniform mat4 view;\n"
-	"uniform mat4 projection;\n"
+	"layout (std140) uniform matrices {\n"
+	"   mat4 model;\n"
+	"   mat4 view;\n"
+	"   mat4 projection;\n"
+	"};"
 
 	"void main() {\n"
 	"   mat4 mvp = projection * view * model;\n"
@@ -114,11 +122,11 @@ void GLRenderer::initRenderer() {
 		if (!shaderCompileSuccess) {
 			glGetShaderiv(cubeVert, GL_INFO_LOG_LENGTH, &shaderErrorLogLength);
 			
-			std::vector<char> log;
-			log.reserve(shaderErrorLogLength);
-			glGetShaderInfoLog(cubeVert, shaderErrorLogLength, &shaderErrorLogLength, &log[0]);
-			printf("Error compiling vertex shader: %s\n", &log[0]);
-			
+			char *log = new char[shaderErrorLogLength];
+			glGetShaderInfoLog(cubeVert, shaderErrorLogLength, &shaderErrorLogLength, log);
+			printf("Error compiling vertex shader: %s\n", log);
+			delete[] log;
+
 			glDeleteShader(cubeVert);
 			return;
 		}
@@ -133,11 +141,11 @@ void GLRenderer::initRenderer() {
 		if (!shaderCompileSuccess) {
 			glGetShaderiv(fragVert, GL_INFO_LOG_LENGTH, &shaderErrorLogLength);
 			
-			std::vector<GLchar> log;
-			log.reserve(shaderErrorLogLength);
-			glGetShaderInfoLog(fragVert, shaderErrorLogLength, &shaderErrorLogLength, &log[0]);
-			printf("Error compiling fragment shader: %s\n", &log[0]);
-			
+			char *log = new char[shaderErrorLogLength];
+			glGetShaderInfoLog(fragVert, shaderErrorLogLength, &shaderErrorLogLength, log);
+			printf("Error compiling fragment shader: %s\n", log);
+			delete[] log;
+
 			glDeleteShader(fragVert);
 			return;
 		}
@@ -169,16 +177,12 @@ void GLRenderer::initRenderer() {
 		glDetachShader(singleCubeProgram, cubeVert);
 		glDetachShader(singleCubeProgram, fragVert);
 	}
-	
-	
-	locationModel = glGetUniformLocation(singleCubeProgram, "model");
-	checkError("glGetUniformLocation-model");
-	locationView = glGetUniformLocation(singleCubeProgram, "view");
-	checkError("glGetUniformLocation-view");
-	locationProj = glGetUniformLocation(singleCubeProgram, "projection");
-	checkError("glGetUniformLocation-projection");
-	locationPosition = glGetAttribLocation(singleCubeProgram, "position");
-	checkError("glGetAttribLocation-position");
+
+	uboBlockIndex = glGetUniformBlockIndex(singleCubeProgram, "matrices");
+
+	glGenBuffers(1, &ubo);
+	glBindBuffer(GL_UNIFORM_BUFFER, ubo);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(uniformData), &uniformData, GL_DYNAMIC_DRAW);
 	
 	glGenBuffers(1, &buffer);
 	glGenBuffers(1, &ibo);
@@ -226,17 +230,22 @@ void GLRenderer::renderSingleCube() {
 	glEnableVertexAttribArray(locationPosition);
 	glVertexAttribPointer(locationPosition, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
 	
-	glUniformMatrix4fv(locationView, 1, false, &view[0][0]);
-	glUniformMatrix4fv(locationProj, 1, false, &proj[0][0]);
+	// Update the UBO's data.
+	glBindBuffer(GL_UNIFORM_BUFFER, ubo);
+	glBufferSubData(GL_UNIFORM_BUFFER, offsetof(UBO, view), sizeof(glm::mat4), &view[0][0]);
+	glBufferSubData(GL_UNIFORM_BUFFER, offsetof(UBO, projection), sizeof(glm::mat4), &proj[0][0]);
 
+	// Bind buffers to shaders
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, ubo); // bind to register 0
+	glUniformBlockBinding(singleCubeProgram, uboBlockIndex, 0); // bind to register 0
 
 	for (int x = 0; x < 16; ++x) {
 		for (int z = 0; z < 16; ++z) {
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, glm::vec3(float(x), 0.0f, float(z)));
-			glUniformMatrix4fv(locationModel, 1, false, &model[0][0]);
+			glBufferSubData(GL_UNIFORM_BUFFER, offsetof(UBO, model), sizeof(glm::mat4), &model[0][0]);
 
 			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
 		}
