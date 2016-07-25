@@ -30,6 +30,7 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -57,30 +58,66 @@ struct UBO {
 	glm::mat4 projection;
 } uniformData;
 
+struct PointLights {
+	glm::vec3 position;
+	glm::vec3 color;
+};
+
+#define LIGHT_COUNT 4
+
+PointLights lights[LIGHT_COUNT];
+
+struct LightData {
+	GLuint position;
+	GLuint color;
+};
+LightData lightsGLSL[LIGHT_COUNT];
+
 const char *vertSingleCubeSrc =
-	"#version 330 core\n"
+"#version 330 core\n"
 
-	"layout (location = 0) in vec3 position;\n"
+"layout (location = 0) in vec3 position;\n"
 
-	"layout (std140) uniform matrices {\n"
-	"   mat4 model;\n"
-	"   mat4 view;\n"
-	"   mat4 projection;\n"
-	"};"
+"layout (std140) uniform matrices {\n"
+"   mat4 model;\n"
+"   mat4 view;\n"
+"   mat4 projection;\n"
+"};"
 
-	"void main() {\n"
-	"   mat4 mvp = projection * view * model;\n"
-	"   gl_Position = mvp * vec4(position, 1);\n"
-	"}";
+"out vec3 fragPosition;"
+
+"void main() {\n"
+"   mat4 mvp = projection * view * model;\n"
+"   gl_Position = mvp * vec4(position, 1);\n"
+"   fragPosition = vec3(model * vec4(position, 1));"
+"}";
 
 const char *fragSingleCubeSrc =
-	"#version 330 core\n"
+"#version 330 core\n"
 
-	"out vec4 frag_color;\n"
+"struct PointLight {\n"
+"   vec3 position;\n"
+"   vec3 color;\n"
+"};\n"
 
-	"void main() {\n"
-	"   frag_color = vec4(1, 0, 0, 1);\n"
-	"}";
+"#define LIGHT_COUNT 4\n"
+"uniform PointLight lights[LIGHT_COUNT];\n"
+
+"in vec3 fragPosition;\n"
+"out vec4 frag_color;\n"
+
+"void main() {\n"
+"   vec3 ac = vec3(0,0,0);\n"
+"   for (int i = 0; i < LIGHT_COUNT; i++) {\n"
+"      float distance = length(lights[i].position - fragPosition);\n"
+"      if (distance <= 4.0) {\n"
+"         float attenuation = 1.0 / (distance * distance);\n"
+"         vec3 lightColor = lights[i].color * attenuation;\n"
+"         ac += lightColor;\n"
+"      }\n"
+"   }\n"
+"   frag_color = vec4(0.25, 0, 0, 1) + vec4(ac, 0);\n"
+"}";
 
 static void checkError(const char *fn) {
 	GLenum err;
@@ -167,11 +204,11 @@ void GLRenderer::initRenderer() {
 		if (!linked) {
 			glGetProgramiv(singleCubeProgram, GL_INFO_LOG_LENGTH, &shaderErrorLogLength);
 			
-			std::vector<GLchar> log;
-			log.reserve(shaderErrorLogLength);
-			glGetProgramInfoLog(singleCubeProgram, shaderErrorLogLength, &shaderErrorLogLength, &log[0]);
-			printf("Error linking program: %s\n", &log[0]);
-			
+			char *log = new char[shaderErrorLogLength];
+			glGetProgramInfoLog(singleCubeProgram, shaderErrorLogLength, &shaderErrorLogLength, log);
+			printf("Error linking program: %s\n", log);
+			delete[] log;
+
 			glDeleteProgram(singleCubeProgram);
 			glDeleteShader(cubeVert);
 			glDeleteShader(fragVert);
@@ -203,6 +240,23 @@ void GLRenderer::initRenderer() {
 		glVertexAttribPointer(locationPosition, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
 	}
 	glBindVertexArray(mGlobalVAO);
+
+	// Lights.
+	for (U32 i = 0; i < LIGHT_COUNT; ++i) {
+		std::string pos = "lights[" + std::to_string(i) + "].position";
+		std::string col = "lights[" + std::to_string(i) + "].color";
+		lightsGLSL[i].position = glGetUniformLocation(singleCubeProgram, pos.c_str());
+		lightsGLSL[i].color = glGetUniformLocation(singleCubeProgram, col.c_str());
+	}
+
+	lights[0].color = glm::vec3(0.0f, 0.3f, 0.0f);
+	lights[0].position = glm::vec3(3.0f, 0.0f, 3.0f);
+	lights[1].color = glm::vec3(0.0f, 0.0f, 0.3f);
+	lights[1].position = glm::vec3(5.0f, 0.0f, 3.0f);
+	lights[2].color = glm::vec3(0.0f, 3.0f, 0.3f);
+	lights[2].position = glm::vec3(5.0f, 0.0f, 5.0f);
+	lights[3].color = glm::vec3(3.0f, 0.0f, 0.3f);
+	lights[3].position = glm::vec3(3.0f, 1.0f, 5.0f);
 }
 
 void GLRenderer::destroyRenderer() {
@@ -250,6 +304,12 @@ void GLRenderer::renderSingleCube() {
 	glBindVertexArray(cubeVAO);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, ubo); // bind to register 0
 	glUniformBlockBinding(singleCubeProgram, uboBlockIndex, 0); // bind to register 0
+
+	// Bind lights
+	for (int i = 0; i < LIGHT_COUNT; ++i) {
+		glUniform3fv(lightsGLSL[i].position, 1, &lights[i].position[0]);
+		glUniform3fv(lightsGLSL[i].color, 1, &lights[i].color[0]);
+	}
 
 	for (int x = 0; x < 16; ++x) {
 		for (int z = 0; z < 16; ++z) {
