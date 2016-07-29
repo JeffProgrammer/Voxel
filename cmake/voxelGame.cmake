@@ -33,6 +33,7 @@ set(VOXEL_SRC
 	src/core/algorithm.hpp
 	src/core/cube.hpp
 	src/core/types.hpp
+	src/core/screenspaceTiling.hpp
 
 	src/game/camera.cpp
 	src/game/camera.hpp
